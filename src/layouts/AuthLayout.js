@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { Loader, Sidebar } from "../components";
+import { Loader, Navbar, Sidebar } from "../components";
 
 const AuthLayout = ({ children, onLoad = () => {} }) => {
   const navigate = useNavigate();
@@ -25,7 +25,10 @@ const AuthLayout = ({ children, onLoad = () => {} }) => {
     <div className="container-fluid position-relative d-flex p-0">
       <Loader />
       <Sidebar />
-      {children}
+        <div className="content">
+          <Navbar />
+          {children}
+        </div>
     </div>
   );
 }
