@@ -1,4 +1,11 @@
-import Loader from "./Loader";
-import Navbar from "./Navbar";
+import Cards from "./Cards";
+import Header from "./Header";
+import * as Icons from "./Icons";
+import Sidebar from "./Sidebar";
 
-export { Loader, Navbar};
+export {
+    Cards,
+    Header,
+    Icons,
+    Sidebar
+}

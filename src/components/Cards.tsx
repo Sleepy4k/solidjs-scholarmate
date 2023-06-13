@@ -1,37 +1,28 @@
+import { Component } from "solid-js";
 import Card from "@suid/material/Card";
 import { CardActionArea } from "@suid/material";
-import CardContent from "@suid/material/CardContent";
 import CardMedia from "@suid/material/CardMedia";
-import Button from "@suid/material/Button";
 import Typography from "@suid/material/Typography";
+import CardContent from "@suid/material/CardContent";
 
-export default function MediaCard() {
-    return (
-      
-        <Card sx={{ maxWidth: 500 }}>
-          <CardActionArea>
-            <CardMedia
-                sx={{ height: 200 }}
-                image="data:image/png;base64,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"
-                title="green iguana"
-            />
-            <CardContent>
-              <Typography gutterBottom variant="body2" component="div">
-                    Beasiswa
-                </Typography>
-                <Typography gutterBottom variant="h5" component="div">
-                    PT Pertamina (Persero)
-                </Typography>
-                
-                <Typography gutterBottom variant="body2" component="div">
-                    Jurusan
-                  <Typography gutterBottom variant="h5" component="div">
-                      Teknik Kimia
-                  </Typography>
-                </Typography>
-
-            </CardContent>
-            </CardActionArea>
-        </Card>
-    );
+const Cards: Component<{ name: string, major: string, image: string }> = (props) => {
+  return (
+    <Card sx={{ maxWidth: 500 }}>
+      <CardActionArea>
+        <CardMedia
+          sx={{ height: 200 }}
+          image={props.image}
+          title="green iguana"
+        />
+        <CardContent>
+          <Typography gutterBottom variant="body2" component="div">Beasiswa</Typography>
+          <Typography gutterBottom variant="h5" component="div">{props.name}</Typography>
+          <Typography gutterBottom variant="body2" component="div">Jurusan</Typography>
+          <Typography gutterBottom variant="h5" component="div">{props.major}</Typography>
+        </CardContent>
+      </CardActionArea>
+    </Card>
+  );
 }
+
+export default Cards;
