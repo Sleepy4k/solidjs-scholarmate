@@ -1,7 +1,7 @@
 import { Toaster } from "solid-toast";
 import { checkCookie } from "../utils";
 import { useNavigate } from "@solidjs/router";
-import { Sidebar, Header } from "../components";
+import { Sidebar, Navbar, Loader } from "../components";
 import { Component, createEffect, createSignal } from "solid-js";
 
 const AuthLayout: Component<{ children: any, onFinish: () => void }> = (props: any) => {
@@ -21,13 +21,12 @@ const AuthLayout: Component<{ children: any, onFinish: () => void }> = (props: a
   });
 
   return (
-    <>
-      {loading() ? null : (
-        <div class="flex h-screen bg-gray-200 font-roboto">
+    <div class="flex h-screen bg-gray-200 font-roboto">
+      {loading() ? <Loader title={"Loading"} /> : (
+        <>
           <Sidebar open={open} setOpen={setOpen}   />
-
           <div class="flex-1 flex flex-col overflow-hidden">
-            <Header open={open} setOpen={setOpen} />
+            <Navbar open={open} setOpen={setOpen} />
 
             <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
               <div class="p-4">
@@ -36,9 +35,9 @@ const AuthLayout: Component<{ children: any, onFinish: () => void }> = (props: a
             </main>
           </div>
           <Toaster />
-        </div>
+        </>
       )}
-    </>
+      </div>
   )
 }
 
