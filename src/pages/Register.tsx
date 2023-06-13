@@ -1,7 +1,8 @@
+import { Api } from "../services";
+import { Println } from "../utils";
 import GuestLayout from "../layouts/GuestLayout";
 import { useNavigate, A } from "@solidjs/router";
 import { Component, createSignal } from "solid-js";
-import { Api, Println, setStorage } from "../utils";
 
 const APP_NAME = import.meta.env.VITE_APP_NAME as string;
 
@@ -76,7 +77,7 @@ const Register: Component = () => {
         if (value.status === "success") {
           Println("Register", value.message, "success");
           navigate("/login");
-        } else if (value.status == "failed") {
+        } else if (value.status === "failed") {
           Println("Register", value.message, "error");
         } else {
           Println("Register", "Something went wrong!", "error");

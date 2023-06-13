@@ -2,11 +2,12 @@ import 'swiper/css';
 import 'swiper/css/scrollbar';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import { Api } from "../services";
+import { Println } from '../utils';
 import { Cards } from "../components";
-import { Api, Println } from '../utils';
 import { Pagination, FreeMode } from 'swiper';
 import AuthLayout from "../layouts/AuthLayout";
-import { Swiper, SwiperSlide, } from 'swiper/solid';
+import { Swiper, SwiperSlide } from 'swiper/solid';
 import { Component, createSignal, For } from "solid-js";
 
 const Dashboard: Component = () => {
@@ -36,7 +37,7 @@ const Dashboard: Component = () => {
             accepted,
             declined,
           });
-        } else if (value.status == "failed") {
+        } else if (value.status === "failed") {
           Println("Dashboard", value.message, "error");
         } else {
           Println("Dashboard", "Something went wrong!", "error");
@@ -52,7 +53,7 @@ const Dashboard: Component = () => {
 
         if (value.status === "success") {
           setMyApplications(value.data);
-        } else if (value.status == "failed") {
+        } else if (value.status === "failed") {
           Println("Dashboard", value.message, "error");
         } else {
           Println("Dashboard", "Something went wrong!", "error");
@@ -68,7 +69,7 @@ const Dashboard: Component = () => {
 
         if (value.status === "success") {
           setForum(value.data);
-        } else if (value.status == "failed") {
+        } else if (value.status === "failed") {
           Println("Dashboard", value.message, "error");
         } else {
           Println("Dashboard", "Something went wrong!", "error");

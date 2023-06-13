@@ -1,7 +1,8 @@
+import { Api } from "../services";
 import GuestLayout from "../layouts/GuestLayout";
 import { useNavigate, A } from "@solidjs/router";
 import { Component, createSignal } from "solid-js";
-import { Api, Println, setStorage } from "../utils/index";
+import { Println, setStorage } from "../utils/index";
 
 const Login: Component = () => {
   const navigate = useNavigate();
@@ -60,7 +61,7 @@ const Login: Component = () => {
         if (value.status === "success") {
           Println("Login", value.message, "success");
           handleLogin(value.data[0]);
-        } else if (value.status == "failed") {
+        } else if (value.status === "failed") {
           Println("Login", value.message, "error");
         } else {
           Println("Login", "Something went wrong!", "error");
