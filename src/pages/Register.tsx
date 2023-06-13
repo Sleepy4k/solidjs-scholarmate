@@ -135,7 +135,7 @@ const Register: Component = () => {
                 <label for="floatingPassword">Password Confirmation</label>
                 <input 
                   required
-                  type="confirm_password"
+                  type="password"
                   id="floatingConfirmPassword"
                   name="confirm_password"
                   placeholder="Password Confirmation"
