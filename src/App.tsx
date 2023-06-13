@@ -1,18 +1,22 @@
-// import "./index.css";
-import { Component, lazy } from "solid-js";
-import { Routes, Route } from "@solidjs/router";
+import { Component, createSignal, lazy } from 'solid-js';
 
-const Login = lazy(() => import("./pages/Login"));
-const Register = lazy(() => import("./pages/Register"));
-const Dashboard = lazy(() => import("./pages/Dashboard"));
+import { Router, Routes, Route } from "@solidjs/router";
+
+
+const Login = lazy(() => import("./pages/auth/login"));
+const Register = lazy(() => import("./pages/auth/Register"));
+const Dashboard = lazy(() => import("./pages/dash/dashboard"));
 
 const App: Component = () => {
   return (
-    <Routes>
-      <Route path="/" component={Dashboard} />
-      <Route path="/login" component={Login} />
-      <Route path="/register" component={Register} />
-    </Routes>
+  <Router>
+      <Routes>
+        <Route path="/" component={Dashboard} />
+        <Route path="/login" component={Login} />
+        <Route path="/register" component={Register} />
+      </Routes>
+  </Router>
+    
   );
 };
 

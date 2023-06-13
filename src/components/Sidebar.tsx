@@ -1,39 +1,58 @@
-import { Component } from "solid-js";
-import { useNavigate, A } from "@solidjs/router";
-import { Api, deleteStorage, getStorage } from "../utils";
 
-const APP_NAME = import.meta.env.VITE_APP_NAME as string;
+import { Component, createSignal, For, Show, onCleanup } from "solid-js";
+import { BsArrowLeftCircle } from 'solid-icons/bs'
+import { Dynamic } from "solid-js/web";
+import { Icons } from "./icon";
 
-const Sidebar: Component = () => {
-  const user = getStorage("user");
+import { createStore } from "solid-js/store"
 
-  return (
-    <div class="sidebar pe-4 pb-3">
-      <nav class="navbar bg-secondary navbar-dark">
-        <A href="/" class="navbar-brand mx-4 mb-3">
-          <h3 class="text-primary">
-            <i class="fa fa-user-edit me-2"></i>{APP_NAME}
-          </h3>
-        </A>
-        <div class="d-flex align-items-center ms-4 mb-4">
-          <div class="position-relative">
-            <img class="rounded-circle w-10 h-10" src="/src/assets/img/user.jpg" alt=""/>
-            <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
-          </div>
-          <div class="ms-3">
-            <h6 class="mb-0">{user.email}</h6>
-            <span>{user.role}</span>
-          </div>
-        </div>
-        <div class="navbar-nav w-100">
-          <A href="/" class="nav-item nav-link active">
-            <i class="fa fa-tachometer-alt me-2">
-            </i>Dashboard
-          </A>
-        </div>
-      </nav>
-    </div>
-  );
-};
+
+
+const Sidebar: Component<any> = (props) => {
+
+    debugger;
+    const activeClass = "text-gray-300";
+    const expandedClass = "border-l border-grey-400 ml-4 pl-4"
+    const shrinkedClass = "bg-dark-purple sm:absolute left-20 sm:shadow-md sm:z-10 sm:bg-grey-900 sm:rounded-md sm:p-4 border-l sm:border-none border-grey-400 ml-4 pl-4 sm:ml-0"
+   // const [open, setOpen] = createSignal(false);
+    let menuArray = [
+        { title: "Dashboard", Icon: "DASHBOARD", child: [], Type: "MENU" },
+        { title: "Lead", Icon: "LEAD", child: [], Type: "MENU" },
+        { title: "Opportunity", Icon: "OPPORTUNITY", child: [], Type: "MENU" },
+        { title: "", Icon: "", child: [], Type: "DIVIDER" },
+        { title: "Quote", Icon: "QUOTE", child: [], Type: "MENU" },
+        { title: "Order", Icon: "ORDER", child: [], Type: "MENU" },
+        { title: "Billing", Icon: "BILLING", child: [], Type: "MENU" },
+        { title: "", Icon: "", child: [], Type: "DIVIDER" },
+        { title: "Business", Icon: "BUSINESS", child: [], Type: "MENU" },
+        { title: "Item", Icon: "ITEM", gap: true, child: [], Type: "MENU" },
+        { title: "Setting", Icon: "SETTING", child: [], Type: "MENU" }
+    ]
+    const [menus, setMenus] = createStore({ Menus: menuArray });
+
+ 
+    return (
+        <>
+            <div class="flex">
+                <div class={`${props.open() == true ? 'block' : 'hidden'} fixed inset-0 z-20 transition-opacity bg-dark-purple opacity-50 lg:hidden`}  onClick={() => props.setOpen(false)}></div>
+                <div class={`${props.open() == true ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'} drop-shadow-md  fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-dark-purple lg:translate-x-0 lg:static lg:inset-0`}>
+                    <div class="flex items-center justify-center mt-2 border-b pb-2">
+                        <img src="./src/assets/logo.png" class={`cursor-pointer duration-500 w-8 ${props.open() && 'rotate-[360deg]'}`} />
+                        <span class="mx-2 text-[22px] font-semibold text-white">SchoolarMates</span>
+                    </div>
+                    <nav class="mt-2 pl-2 pr-2">
+                        <For each={menus.Menus}>{(menu, index) =>
+                            <Show when={menu.Type == 'MENU'} fallback={<div class={` border-dashed border-light-white  border origin-left duration-200 mt-4 mb-4`}></div>}>
+                                <div class={`text-white text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-2  ${index() == 0 && 'bg-light-white'}`}>
+                                    <Dynamic component={Icons[menu.Icon]} /><span class={`origin-left duration-200`}>  {menu.title}</span>
+                                </div>
+                            </Show>
+                        }</For>
+                    </nav>
+                </div>
+            </div>
+        </>
+    );
+}
 
 export default Sidebar;

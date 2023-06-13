@@ -10,7 +10,7 @@ const GuestLayout: Component<{ children: any, onFinish: () => void }> = (props: 
 
   createEffect(async () => {
     const user = getStorage("user");
-    const isUserLoggedIn = checkCookie("auth_jwt_secret");
+    const isUserLoggedIn = checkCookie("schoolarship_auth_token");
 
     if (isUserLoggedIn || user) {
       navigate("/");

@@ -1,16 +1,18 @@
-import GuestLayout from "../layouts/GuestLayout";
+import GuestLayout from "../../layouts/GuestLayout";
 import { useNavigate, A } from "@solidjs/router";
 import { Component, createSignal } from "solid-js";
-import { Api, Println, setStorage } from "../utils";
+import { Api, Println, setStorage } from "../../utils";
 
 const APP_NAME = import.meta.env.VITE_APP_NAME as string;
 
-const Login: Component = () => {
+const Register: Component = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = createSignal(false);
   const [data, setData] = createSignal({
     email: "",
+    role: "user",
     password: "",
+    confirm_password: "",
   });
   
   const handleChange = (e: any) => {
@@ -21,7 +23,6 @@ const Login: Component = () => {
     let formIsValid = true;
     setLoading(true);
 
-    // Validasi buat Email
     if (!data().email) {
       formIsValid = false;
       Println("Login", "Email cannot be empty!", "error");
@@ -35,7 +36,6 @@ const Login: Component = () => {
       }
     }
 
-    // Validasi buat Password
     if (!data().password) {
       formIsValid = false;
       Println("Login", "Password cannot be empty!", "error");
@@ -46,6 +46,21 @@ const Login: Component = () => {
       }
     }
 
+    if (!data().confirm_password) {
+      formIsValid = false;
+      Println("Login", "Confirm Password cannot be empty!", "error");
+    } else if (typeof data().confirm_password !== "undefined") {
+      if (data().confirm_password.length < 6) {
+        formIsValid = false;
+        Println("Login", "Confirm Password must be at least 6 characters!", "error");
+      }
+    }
+
+    if (data().password !== data().confirm_password) {
+      formIsValid = false;
+      Println("Login", "Password and Confirm Password must be same!", "error");
+    }
+
     if (formIsValid) {
       handleSubmit();
     } else {
@@ -53,15 +68,14 @@ const Login: Component = () => {
     }
   }
 
-  // submit Button
   const handleSubmit = async () => {
-    Api.post("/login", data())
+    Api.post("register", data(), { withCredentials: false })
       .then((res) => {
         const value = res.data;
 
         if (value.status === "success") {
           Println("Login", value.message, "success");
-          handleLogin(value.data[0]);
+          navigate("/login");
         } else if (value.status == "failed") {
           Println("Login", value.message, "error");
         } else {
@@ -76,11 +90,6 @@ const Login: Component = () => {
       });
   };
 
-  const handleLogin = (data: any) => {
-    setStorage("user", data);
-    navigate("/");
-  }
-
   return (
     <GuestLayout onFinish={() => {}}>
       <div class="container-fluid">
@@ -91,7 +100,7 @@ const Login: Component = () => {
                 <A href="/">
                   <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>{APP_NAME}</h3>
                 </A>
-                <h3>Sign In</h3>
+                <h3>Sign Up</h3>
               </div>
               <div class="form-floating mb-3">
                 <input type="email" class="form-control" id="floatingEmail" name="email" placeholder="name@example.com" value={data().email} disabled={loading()} onchange={handleChange} required />
@@ -101,8 +110,12 @@ const Login: Component = () => {
                 <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password" value={data().password} disabled={loading()} onchange={handleChange} required />
                 <label for="floatingPassword">Password</label>
               </div>
-              <button type="submit" class="btn btn-primary py-3 w-100 mb-4" onclick={handleValidation} disabled={loading()}>Sign In</button>
-              <p class="text-center mb-0">Don't have an Account? <A href="/register">Sign Up</A></p>
+              <div class="form-floating mb-4">
+                <input type="password" class="form-control" id="floatingConfirmPassword" name="confirm_password" placeholder="Password Confirmation" value={data().confirm_password} disabled={loading()} onchange={handleChange} required />
+                <label for="floatingConfirmPassword">Password Confirmation</label>
+              </div>
+              <button type="submit" class="btn btn-primary py-3 w-100 mb-4" onclick={handleValidation} disabled={loading()}>Sign Up</button>
+              <p class="text-center mb-0">Already have an Account? <A href="/login">Sign In</A></p>
             </div>
           </div>
         </div>
@@ -111,4 +124,4 @@ const Login: Component = () => {
   );
 };
 
-export default Login;
+export default Register;
