@@ -1,9 +1,7 @@
 import GuestLayout from "../layouts/GuestLayout";
 import { useNavigate, A } from "@solidjs/router";
 import { Component, createSignal } from "solid-js";
-import { Api, Println, setStorage } from "../utils";
-
-const APP_NAME = import.meta.env.VITE_APP_NAME as string;
+import { Api, Println, setStorage } from "../utils/index";
 
 const Login: Component = () => {
   const navigate = useNavigate();
@@ -83,30 +81,67 @@ const Login: Component = () => {
 
   return (
     <GuestLayout onFinish={() => {}}>
-      <div class="container-fluid">
-        <div class="row h-100 align-items-center justify-content-center min-h-screen">
-          <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
-            <div class="bg-secondary rounded p-4 p-sm-5 my-4 mx-3">
-              <div class="d-flex align-items-center justify-content-between mb-3">
-                <A href="/">
-                  <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>{APP_NAME}</h3>
-                </A>
-                <h3>Sign In</h3>
-              </div>
-              <div class="form-floating mb-3">
-                <input type="email" class="form-control" id="floatingEmail" name="email" placeholder="name@example.com" value={data().email} disabled={loading()} onchange={handleChange} required />
+      <section class="h-screen">
+        <div class="py-12 h-full">
+          <div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
+            <div class="md:w-8/12 lg:w-6/12 mb-12 md:mb-0">
+              <img
+                src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
+                class="w-full"
+                alt="Phone image"
+              />
+            </div>
+            <div class="md:w-8/12 lg:w-5/12 lg:ml-20">
+              <div class="mb-6">
                 <label for="floatingEmail">Email address</label>
+                <input 
+                  required
+                  type="email"
+                  id="floatingEmail"
+                  name="email"
+                  placeholder="name@example.com"
+                  value={data().email}
+                  disabled={loading()}
+                  onchange={handleChange} 
+                  class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                />
               </div>
-              <div class="form-floating mb-4">
-                <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password" value={data().password} disabled={loading()} onchange={handleChange} required />
+              <div class="mb-6">
                 <label for="floatingPassword">Password</label>
+                <input 
+                  required
+                  type="password"
+                  id="floatingPassword"
+                  name="password"
+                  placeholder="Password"
+                  value={data().password}
+                  disabled={loading()}
+                  onchange={handleChange} 
+                  class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                />
               </div>
-              <button type="submit" class="btn btn-primary py-3 w-100 mb-4" onclick={handleValidation} disabled={loading()}>Sign In</button>
-              <p class="text-center mb-0">Don't have an Account? <A href="/register">Sign Up</A></p>
+              <button
+                type="submit" onclick={handleValidation} disabled={loading()}
+                class="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
+                data-mdb-ripple="true"
+                data-mdb-ripple-color="light">
+                Sign in
+              </button>
+              <div class="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">
+                <p class="text-center font-semibold mx-4 mb-0">OR</p>
+              </div>
+              <A
+                class="px-7 py-3 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full flex justify-center items-center mb-3" style="background-color: #3b5998"
+                href="/register"
+                data-mdb-ripple="true"
+                data-mdb-ripple-color="light"
+              >
+                Sign Up
+              </A>
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </GuestLayout>
   );
 };
