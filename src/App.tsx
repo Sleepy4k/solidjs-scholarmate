@@ -3,6 +3,7 @@ import { Routes, Route } from "@solidjs/router";
 
 // import pages
 const Login = lazy(() => import("./pages/Login"));
+const Student = lazy(() => import("./pages/Student"));
 const Register = lazy(() => import("./pages/Register"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 
@@ -11,6 +12,7 @@ const App: Component = () => {
     <Routes>
       <Route path="/" component={Dashboard} />
       <Route path="/login" component={Login} />
+      <Route path="/student" component={Student} />
       <Route path="/register" component={Register} />
     </Routes>
   );
