@@ -1,11 +1,13 @@
 import Cards from "./Cards";
-import Header from "./Header";
+import Navbar from "./Navbar";
 import * as Icons from "./Icons";
+import Loader from "./Loader";
 import Sidebar from "./Sidebar";
 
 export {
-    Cards,
-    Header,
-    Icons,
-    Sidebar
+  Cards,
+  Navbar,
+  Icons,
+  Loader,
+  Sidebar
 }
