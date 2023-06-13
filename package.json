@@ -1,6 +1,6 @@
 {
   "name": "vite-template-solid",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "",
   "scripts": {
     "dev": "vite",
@@ -17,27 +17,14 @@
     "vite-plugin-solid": "^2.3.0"
   },
   "dependencies": {
-    "@amcharts/amcharts4": "^4.10.35",
-    "@amcharts/amcharts5": "^5.3.12",
-    "@amcharts/amcharts5-fonts": "^5.0.1",
-    "@amcharts/amcharts5-geodata": "^5.1.0",
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.11.16",
-    "@mui/material": "^5.13.4",
-    "@mui/styled-engine-sc": "^5.12.0",
+    "@solidjs/router": "^0.8.2",
     "@suid/icons-material": "^0.6.3",
     "@suid/material": "^0.12.3",
     "apexcharts": "^3.35.4",
     "axios": "^1.4.0",
-    "js-cookie": "^3.0.5",
-    "solar-forms": "^0.0.5",
-    "solid-apexcharts": "^0.1.6",
-    "solid-icons": "^0.5.0",
+    "solid-icons": "^1.0.8",
     "solid-js": "^1.7.3",
     "solid-toast": "^0.5.0",
-    "solid-transition-group": "^0.0.10",
-    "styled-components": "^5.3.11",
     "sweetalert": "^2.1.2",
     "swiper": "^8.3.0"
   }
