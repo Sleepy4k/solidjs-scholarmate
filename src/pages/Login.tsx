@@ -2,7 +2,7 @@ import { Api } from "../services";
 import GuestLayout from "../layouts/GuestLayout";
 import { useNavigate, A } from "@solidjs/router";
 import { Component, createSignal } from "solid-js";
-import { Println, setStorage } from "../utils/index";
+import { Println, deleteStorage, setStorage } from "../utils";
 
 const Login: Component = () => {
   const navigate = useNavigate();
@@ -76,6 +76,7 @@ const Login: Component = () => {
   };
 
   const handleLogin = (data: any) => {
+    deleteStorage("user");
     setStorage("user", data);
     navigate("/");
   }
