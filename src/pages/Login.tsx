@@ -121,6 +121,7 @@ const Login: Component = () => {
               />
             </div>
             <div class="md:w-8/12 lg:w-5/12 lg:ml-20">
+              <h1 class="text-5xl font-bold text-blue-500 mb-5" >Login</h1>
               <div class="mb-6">
                 <label for="floatingEmail">Email address</label>
                 <input 

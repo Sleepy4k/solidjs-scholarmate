@@ -3,12 +3,13 @@ import { GridData } from "../components";
 import AuthLayout from "../layouts/AuthLayout";
 import { Println, getStorage } from "../utils";
 import { Component, createSignal } from "solid-js";
+import { Button } from "@suid/material";
 
 const Schoolarship: Component = () => {
   const user = getStorage("user")
   const [loading, setLoading] = createSignal(true);
   const [schoolarship, setSchoolarship] = createSignal([]);
-  
+
   let field = [
     { field: "id", headerName: "ID" },
     { field: "name" },
@@ -17,18 +18,18 @@ const Schoolarship: Component = () => {
     { field: "description" },
     { field: "requirement" },
     { field: "action", cellRenderer: (params) => (
-      <>
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Edit
-        </button>
-        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-          Delete
-        </button>
-      </>
+      <div class = "space-x-3">
+        <Button  variant="contained" color="success">
+             Edit 
+          </Button>
+        <Button  variant="contained" color="error">
+             Delete 
+        </Button>
+      </ div>
     )}
   ];
 
-  if (user.role !== "admin") {
+  if (user.role != "admin") {
     field = [
       { field: "id", headerName: "ID" },
       { field: "name" },
@@ -38,9 +39,9 @@ const Schoolarship: Component = () => {
       { field: "requirement" },
       { field: "action", cellRenderer: (params) => (
         <>
-          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Apply
-          </button>
+          <Button variant="contained" color="success">
+             Apply
+          </Button>
         </>
       )}
     ];
@@ -71,7 +72,7 @@ const Schoolarship: Component = () => {
 
   return (
     <AuthLayout onFinish={onFinish}>
-      <div class="w-full">
+      <div class="w-full mt-12">
         {loading() ? null : <GridData data={schoolarship()} field={field} />}
       </div>
     </AuthLayout>
