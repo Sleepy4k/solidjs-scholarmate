@@ -21,13 +21,12 @@ const AuthLayout: Component<{ children: any, onFinish: () => void }> = (props: a
   });
 
   return (
-    <div class="flex h-screen bg-gray-200 font-roboto">
+    <>
       {loading() ? <Loader title={"Loading"} /> : (
-        <>
+        <div class="flex h-screen bg-gray-200 font-roboto">
           <Sidebar open={open} setOpen={setOpen}   />
           <div class="flex-1 flex flex-col overflow-hidden">
             <Navbar open={open} setOpen={setOpen} />
-
             <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
               <div class="p-4">
                 {props.children}
@@ -35,9 +34,9 @@ const AuthLayout: Component<{ children: any, onFinish: () => void }> = (props: a
             </main>
           </div>
           <Toaster />
-        </>
+        </div>
       )}
-      </div>
+    </>
   )
 }
 
