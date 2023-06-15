@@ -199,7 +199,7 @@ const Dashboard: Component = () => {
               </div>
               <div class="flow-root">
                 <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
-                  <For each={forum()}>{(item, index) => 
+                  <For each={forum().slice(0, 5)}>{(item, index) => 
                     <li class="py-3 sm:py-4">
                       <div class="flex items-center space-x-4">
                         <div class="flex-shrink-0">
@@ -227,7 +227,7 @@ const Dashboard: Component = () => {
                 My Applications
               </h5>
               <Swiper class="mySwiper"  pagination={{ clickable: true }} slides-per-view={5} space-between={2} freeMode={true} modules={[FreeMode, Pagination]}>
-                <For each={myapplications()}>{(item, index) => 
+                <For each={myapplications().slice(0, 5)}>{(item, index) => 
                   <SwiperSlide>
                     <Cards name={item.name} major={item.major} status={item.status} image={item.image} />
                   </SwiperSlide>
@@ -238,10 +238,10 @@ const Dashboard: Component = () => {
         ) : (
           <div class="grid gap-2 grid-cols-12 pt-2">
             <div class="col-span-12 w-full px-6 sm:col-span-12 xl:col-span-6 bg-white rounded-lg border shadow-md dark:bg-gray-800 dark:border-gray-700">
-              {loading() ? null : <PieChart name="Schoolarships" tag="my-app-data" category="name" value="quantity" data={schoolarships()} />}
+              {loading() ? null : <PieChart name="Schoolarships Program" tag="my-app-data" category="name" value="quantity" data={schoolarships()} />}
             </div>
             <div class="col-span-12 w-full px-6 sm:col-span-12 xl:col-span-6 bg-white rounded-lg border shadow-md dark:bg-gray-800 dark:border-gray-700">
-              {loading() ? null : <PieChart name="Universities" tag="univ-data" category="name" value="quantity" data={universities()} />}
+              {loading() ? null : <PieChart name="Universities Quota" tag="univ-data" category="alias" value="quantity" data={universities()} />}
             </div>
           </div>
         )}
