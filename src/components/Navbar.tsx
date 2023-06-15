@@ -3,13 +3,16 @@ import { Icons } from "./Icons";
 import { Api } from "../services";
 import { Dynamic } from "solid-js/web";
 import { useNavigate, A } from "@solidjs/router";
-import { Println, deleteStorage } from "../utils";
+import { Println, deleteStorage, getStorage } from "../utils";
 import { Component, createSignal, Show } from "solid-js";
 
 const Navbar: Component<any> = (props) => {
   const menu: any = "MENU"
   const navigate = useNavigate();
   const [openMatMenu, setOpenMatMenu] = createSignal(false);
+  const user = getStorage("user")
+
+
 
   const onLogout = () => {
     swal({
@@ -43,7 +46,7 @@ const Navbar: Component<any> = (props) => {
   }
 
   return (
-    <header class="flex items-center justify-between px-6 py-2 bg-white border-b border-dark-purple drop-shadow-md">
+    <header class="flex items-center justify-between px-6 py-2 bg-white border-b border-dark-purple drop-shadow-md h-20">
       <div class="flex items-center">
         <button class="text-gray-500 focus:outline-none cursor-pointer lg:hidden" onClick={() => props.setOpen(true)}>
           <Dynamic component={Icons[menu]} />
@@ -51,11 +54,12 @@ const Navbar: Component<any> = (props) => {
       </div>
 
       <div class="flex items-center">
+        <h1 class="m-5">{user.email}</h1>
         <div class="relative">
-          <button class="relative z-10 block w-8 h-8 overflow-hidden rounded-full shadow focus:outline-none" onClick={() => setOpenMatMenu(!openMatMenu())}>
+          <button class="relative z-10 block w-14 h-14 overflow-hidden rounded-full shadow focus:outline-none border-2 border-black" onClick={() => setOpenMatMenu(!openMatMenu())}>
             <img
               class="object-cover w-full h-full"
-              src="./src/assets/logo.png"
+              src="./src/assets/profile.jpg"
               alt="Your avatar"
             />
           </button>

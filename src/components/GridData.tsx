@@ -16,7 +16,7 @@ const GridData: Component<{ data: any[], field: any[] }> = (props) => {
   };
 
   return (
-    <div class="ag-theme-alpine-dark" style={{ height: "750px" }}>
+    <div class="ag-theme-alpine" style={{ height: "750px" }}>
       <AgGridSolid rowData={rowData()} columnDefs={columnDefs} defaultColDef={defaultColDef} animateRows={true} pagination={true} paginationPageSize={10} />
     </div>
   );
