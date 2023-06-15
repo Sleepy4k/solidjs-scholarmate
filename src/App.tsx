@@ -6,6 +6,8 @@ const Login = lazy(() => import("./pages/Login"));
 const Student = lazy(() => import("./pages/Student"));
 const Register = lazy(() => import("./pages/Register"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
+const University = lazy(() => import("./pages/University"));
+const Schoolarship = lazy(() => import("./pages/Schoolarship"));
 
 const App: Component = () => {
   return (
@@ -14,6 +16,8 @@ const App: Component = () => {
       <Route path="/login" component={Login} />
       <Route path="/student" component={Student} />
       <Route path="/register" component={Register} />
+      <Route path="/university" component={University} />
+      <Route path="/schoolarship" component={Schoolarship} />
     </Routes>
   );
 };
