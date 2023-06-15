@@ -23,7 +23,7 @@ const AuthLayout: Component<{ children: any, onFinish: () => void }> = (props: a
   return (
     <>
       {loading() ? <Loader title={"Loading"} /> : (
-        <div class="flex h-screen bg-gray-200 font-roboto">
+        <div class="flex h-screen bg-gray-200 font-sans">
           <Sidebar open={open} setOpen={setOpen}   />
           <div class="flex-1 flex flex-col overflow-hidden">
             <Navbar open={open} setOpen={setOpen} />
