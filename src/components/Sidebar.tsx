@@ -1,5 +1,6 @@
 
 import { Icons } from "./Icons";
+import { getStorage } from "../utils";
 import { Dynamic } from "solid-js/web";
 import { SidebarMenu } from "../consts";
 import { createStore } from "solid-js/store";
@@ -10,6 +11,7 @@ const APP_NAME = import.meta.env.VITE_APP_NAME as string;
 
 const Sidebar: Component<any> = (props) => {
   const location = useLocation();
+  const user = getStorage("user");
   const [menus, setMenus] = createStore({ Menus: SidebarMenu });
 
   return (
@@ -22,13 +24,17 @@ const Sidebar: Component<any> = (props) => {
         </div>
         <nav class="mt-2 pl-2 pr-2">
           <For each={menus.Menus}>{(menu, index) =>
-            <Show when={menu.Type == 'MENU'} fallback={<div class={` border-dashed border-light-white  border origin-left duration-200 mt-4 mb-4`}></div>}>
-              <A href={menu.link}>
-                <div class={`text-white text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-2  ${location.pathname == menu.link && 'bg-light-white'}`}>
-                  <Dynamic component={Icons[menu.Icon]} /><span class={`origin-left duration-200`}>  {menu.title}</span>
-                </div>
-              </A>
-            </Show>
+            <>
+              {menu.role === 'any' || menu.role === user.role ? (
+                <Show when={menu.Type == 'MENU'} fallback={<div class={`border-dashed border-light-white border origin-left duration-200 mt-4 mb-4`}></div>}>
+                  <A href={menu.link}>
+                    <div class={`text-white text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-2  ${location.pathname == menu.link && 'bg-light-white'}`}>
+                      <Dynamic component={Icons[menu.Icon]} /><span class={`origin-left duration-200`}>  {menu.title}</span>
+                    </div>
+                  </A>
+                </Show>
+              ) : <div></div>}
+            </>
           }</For>
         </nav>
       </div>

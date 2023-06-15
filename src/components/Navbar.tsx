@@ -28,6 +28,7 @@ const Navbar: Component<any> = (props) => {
             deleteStorage("user");
             deleteStorage("student");
             navigate("/login");
+            Println("Dashboard", value.message, "success");
           } else if (value.status === "failed") {
             Println("Dashboard", value.message, "error");
           } else {

@@ -1,13 +1,17 @@
 import Cards from "./Cards";
 import Navbar from "./Navbar";
-import * as Icons from "./Icons";
 import Loader from "./Loader";
 import Sidebar from "./Sidebar";
+import * as Icons from "./Icons";
+import GridData from "./GridData";
+import PieChart from "./PieChart";
 
 export {
   Cards,
-  Navbar,
   Icons,
   Loader,
-  Sidebar
+  Navbar,
+  Sidebar,
+  GridData,
+  PieChart
 }
