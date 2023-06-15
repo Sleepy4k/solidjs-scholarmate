@@ -4,8 +4,6 @@ import GuestLayout from "../layouts/GuestLayout";
 import { useNavigate, A } from "@solidjs/router";
 import { Component, createSignal } from "solid-js";
 
-const APP_NAME = import.meta.env.VITE_APP_NAME as string;
-
 const Register: Component = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = createSignal(false);

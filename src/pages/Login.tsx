@@ -77,7 +77,34 @@ const Login: Component = () => {
 
   const handleLogin = (data: any) => {
     deleteStorage("user");
-    setStorage("user", data);
+    deleteStorage("student");
+
+    setStorage("user", {
+      id: data.id,
+      email: data.email,
+      role: data.role,
+    });
+
+    if (data.student !== null) {
+      setStorage("student", {
+        id: data.student.id,
+        first_name: data.student.first_name,
+        last_name: data.student.last_name,
+        email: data.student.email,
+        phone: data.student.phone,
+        date_of_birth: data.student.date_of_birth,
+        region: data.student.region,
+        register_number: data.student.register_number,
+        toefl_score: data.student.toefl_score,
+        ielts_score: data.student.ielts_score,
+      });
+    }
+
+    if (data.student === null && data.role === "user") {
+      navigate("/student");
+      return;
+    }
+
     navigate("/");
   }
 

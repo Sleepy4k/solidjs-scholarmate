@@ -1,20 +1,34 @@
 import { Api } from "../services";
-import { useNavigate } from "@solidjs/router";
+import { GridData } from "../components";
 import AuthLayout from "../layouts/AuthLayout";
 import { Component, createSignal } from "solid-js";
 import { Println, setStorage, getStorage, deleteStorage } from "../utils";
 
 const Students: Component = () => {
   const user = getStorage("user");
+  const field = [
+    { field: "id", headerName: "ID" },
+    { field: "first_name", headerName: "First Name" },
+    { field: "last_name", headerName: "Last Name" },
+    { field: "email" },
+    { field: "phone" },
+    { field: "date_of_birth", headerName: "DOB" },
+    { field: "region" },
+    { field: "register_number", headerName: "NIK" },
+    { field: "toefl_score", headerName: "TOEFL" },
+    { field: "ielts_score", headerName: "IELTS" }
+  ];
+
+  const [students, setStudents] = createSignal([]);
   const [student, setStudent] = createSignal(null);
-  const [loading, setLoading] = createSignal(false);
+  const [loading, setLoading] = createSignal(true);
   const [loggedIn, setLoggedIn] = createSignal(false);
   const [data, setData] = createSignal({
     first_name: "",
     last_name: "",
     email: "",
     phone: "",
-    register_number: 0,
+    register_number: "",
     date_of_birth: "",
     region: "",
     toefl_score: 0,
@@ -22,7 +36,11 @@ const Students: Component = () => {
   });
   
   const handleChange = (e: any) => {
-    setData({ ...data(), [e.target.name]: e.target.type === 'number' ? parseInt(e.target.value) : e.target.value });
+    if (e.target.name === "register_number") {
+      setData({ ...data(), [e.target.name]: e.target.value });
+    } else {
+      setData({ ...data(), [e.target.name]: e.target.type === 'number' ? parseInt(e.target.value) : e.target.value });
+    }
   }
 
   const handleValidation = () => {
@@ -55,7 +73,7 @@ const Students: Component = () => {
     if (!data().register_number) {
       formIsValid = false;
       Println("Students", "register_number cannot be empty!", "error");
-    }else if (data().register_number < 16) {
+    }else if (data().register_number.length < 16) {
       formIsValid = false;
       Println("Students", "register_number is not valid!", "error");
     }
@@ -151,9 +169,10 @@ const Students: Component = () => {
   }
 
   const onFinish = () => {
+    const pengguna = getStorage("user");
     const siswa = getStorage("student");
 
-    if (siswa) {
+    if (siswa && pengguna && pengguna.role == "user") {
       setStudent(siswa);
       setLoggedIn(true);
       setData({
@@ -167,6 +186,29 @@ const Students: Component = () => {
         toefl_score: siswa.toefl_score || 0,
         ielts_score: siswa.ielts_score || 0,
       });
+
+      setLoading(false);
+    } else if (pengguna && pengguna.role == "admin") {
+      Api.get("student")
+        .then((res) => {
+          const value = res.data;
+          const data = value.data
+
+          if (value.status === "success") {
+            setStudents(data)
+            setLoading(false)
+          } else if (value.status == "failed") {
+            Println("Students", value.message, "error");
+          } else {
+            Println("Students", "Something went wrong!", "error");
+          }
+        })
+        .catch((err) => {
+          Println("Students", err.message, "error")
+        })
+        .finally(() => {
+          setLoading(false)
+        });
     }
   }
 
@@ -315,7 +357,11 @@ const Students: Component = () => {
             </div>
           </div>
         </section>
-      ) : null}
+      ) : (
+        <div class="w-full">
+          {loading() ? null : <GridData data={students()} field={field} />}
+        </div>
+      )}
     </AuthLayout>
   );
 };
