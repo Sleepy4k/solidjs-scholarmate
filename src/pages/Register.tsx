@@ -82,7 +82,11 @@ const Register: Component = () => {
         }
       })
       .catch((err) => {
-        Println("Register", err.message, "error");
+        if (err.response) {
+          Println("Students", err.response.data.message, "error")
+        } else {
+          Println("Students", err.message, "error")
+        }
       })
       .finally(() => {
         setLoading(false);

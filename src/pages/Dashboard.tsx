@@ -3,10 +3,10 @@ import 'swiper/css/scrollbar';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Api } from "../services";
-import { Cards, PieChart } from "../components";
 import { Pagination, FreeMode } from 'swiper';
 import AuthLayout from "../layouts/AuthLayout";
 import { Println, getStorage } from '../utils';
+import { Cards, PieChart } from "../components";
 import { Swiper, SwiperSlide } from 'swiper/solid';
 import { Component, createSignal, For } from "solid-js";
 
@@ -29,7 +29,7 @@ const Dashboard: Component = () => {
     const student = getStorage("student");
 
     if (student && pengguna && pengguna.role === "user") {
-      await Api.get("/application/" + student.id)
+      await Api.get("application/" + student.id)
         .then((res) => {
           const value = res.data;
   
@@ -53,10 +53,14 @@ const Dashboard: Component = () => {
           }
         })
         .catch((err) => {
-          Println("Dashboard", err.message, "error");
+          if (err.response) {
+            Println("Students", err.response.data.message, "error")
+          } else {
+            Println("Students", err.message, "error")
+          }
         });
 
-      await Api.get("/forum/" + student.id)
+      await Api.get("forum/" + student.id)
         .then((res) => {
           const value = res.data;
 
@@ -69,13 +73,17 @@ const Dashboard: Component = () => {
           }
         })
         .catch((err) => {
-          Println("Dashboard", err.message, "error");
+          if (err.response) {
+            Println("Students", err.response.data.message, "error")
+          } else {
+            Println("Students", err.message, "error")
+          }
         })
         .finally(() => {
           setLoading(false);
         });
     } else if (pengguna && pengguna.role === "admin") {
-      await Api.get("/application")
+      await Api.get("application")
         .then((res) => {
           const value = res.data;
   
@@ -98,10 +106,14 @@ const Dashboard: Component = () => {
           }
         })
         .catch((err) => {
-          Println("Dashboard", err.message, "error");
+          if (err.response) {
+            Println("Students", err.response.data.message, "error")
+          } else {
+            Println("Students", err.message, "error")
+          }
         });
 
-      await Api.get("/schoolarship")
+      await Api.get("schoolarship")
         .then((res) => {
           const value = res.data;
   
@@ -114,10 +126,14 @@ const Dashboard: Component = () => {
           }
         })
         .catch((err) => {
-          Println("Dashboard", err.message, "error");
+          if (err.response) {
+            Println("Students", err.response.data.message, "error")
+          } else {
+            Println("Students", err.message, "error")
+          }
         });
 
-      await Api.get("/university")
+      await Api.get("university")
         .then((res) => {
           const value = res.data;
 
@@ -130,7 +146,11 @@ const Dashboard: Component = () => {
           }
         })
         .catch((err) => {
-          Println("Dashboard", err.message, "error");
+          if (err.response) {
+            Println("Students", err.response.data.message, "error")
+          } else {
+            Println("Students", err.message, "error")
+          }
         })
         .finally(() => {
           setLoading(false);
@@ -142,8 +162,8 @@ const Dashboard: Component = () => {
     <AuthLayout onFinish={onFinish}>
       <div class="w-full">
         <div class="grid gap-2 grid-cols-12">
-          <div class="col-span-12  sm:col-span-6 xl:col-span-3">
-            <div class="flex align-middle py-4 pl-4 pr-4 h-20 bg-white items-center space-x-4  rounded-lg border shadow-md  dark:bg-gray-800 dark:border-gray-700">
+          <div class="col-span-12 sm:col-span-6 xl:col-span-3">
+            <div class="flex align-middle py-4 pl-4 pr-4 h-20 bg-white items-center space-x-4 rounded-lg border shadow-md dark:bg-gray-800 dark:border-gray-700">
               <div class="flex-1 min-w-0">
                 <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
                   Total Applications
@@ -167,18 +187,6 @@ const Dashboard: Component = () => {
             </div>
           </div>
           <div class="col-span-12  sm:col-span-6 xl:col-span-3">
-            <div class="flex align-middle py-4 h-20  pl-4 pr-4 items-center rounded-lg space-x-4 bg-white border shadow-md  dark:bg-gray-800 dark:border-gray-700">
-              <div class="flex-1 min-w-0">
-                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                  Applications Pending
-                </p>
-              </div>
-              <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                {applications().pending}
-              </div>
-            </div>
-          </div>
-          <div class="col-span-12  sm:col-span-6 xl:col-span-3">
             <div class="flex align-middle py-4  h-20  pl-4 pr-4 items-center space-x-4 rounded-lg bg-white border shadow-md  dark:bg-gray-800 dark:border-gray-700">
               <div class="flex-1 min-w-0">
                 <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
@@ -187,6 +195,18 @@ const Dashboard: Component = () => {
               </div>
               <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                 {applications().declined}
+              </div>
+            </div>
+          </div>
+          <div class="col-span-12  sm:col-span-6 xl:col-span-3">
+            <div class="flex align-middle py-4 h-20  pl-4 pr-4 items-center rounded-lg space-x-4 bg-white border shadow-md  dark:bg-gray-800 dark:border-gray-700">
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                  Applications Pending
+                </p>
+              </div>
+              <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                {applications().pending}
               </div>
             </div>
           </div>

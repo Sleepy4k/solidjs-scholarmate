@@ -6,19 +6,6 @@ import { Println, setStorage, getStorage, deleteStorage } from "../utils";
 
 const Students: Component = () => {
   const user = getStorage("user");
-  const field = [
-    { field: "id", headerName: "ID" },
-    { field: "first_name", headerName: "First Name" },
-    { field: "last_name", headerName: "Last Name" },
-    { field: "email" },
-    { field: "phone" },
-    { field: "date_of_birth", headerName: "DOB" },
-    { field: "region" },
-    { field: "register_number", headerName: "NIK" },
-    { field: "toefl_score", headerName: "TOEFL" },
-    { field: "ielts_score", headerName: "IELTS" }
-  ];
-
   const [students, setStudents] = createSignal([]);
   const [student, setStudent] = createSignal(null);
   const [loading, setLoading] = createSignal(true);
@@ -35,6 +22,19 @@ const Students: Component = () => {
     ielts_score: 0,
   });
   
+  const field = [
+    { field: "id", headerName: "ID" },
+    { field: "first_name", headerName: "First Name" },
+    { field: "last_name", headerName: "Last Name" },
+    { field: "email" },
+    { field: "phone" },
+    { field: "date_of_birth", headerName: "DOB" },
+    { field: "region" },
+    { field: "register_number", headerName: "NIK" },
+    { field: "toefl_score", headerName: "TOEFL" },
+    { field: "ielts_score", headerName: "IELTS" }
+  ];
+
   const handleChange = (e: any) => {
     if (e.target.name === "register_number") {
       setData({ ...data(), [e.target.name]: e.target.value });
@@ -119,7 +119,7 @@ const Students: Component = () => {
   // submit Button
   const handleSubmit = async () => {
     if (student() && loggedIn()) {
-      Api.put("/join/" + student().id, data())
+      Api.put("join/" + student().id, data())
       .then((res) => {
         const value = res.data;
 
@@ -133,13 +133,17 @@ const Students: Component = () => {
         }
       })
       .catch((err) => {
-        Println("Students", err.message, "error");
+        if (err.response) {
+          Println("Students", err.response.data.message, "error")
+        } else {
+          Println("Students", err.message, "error")
+        }
       })
       .finally(() => {
         setLoading(false);
       });
     } else {
-      Api.post("/join", data())
+      Api.post("join", data())
         .then((res) => {
           const value = res.data;
   
@@ -153,7 +157,11 @@ const Students: Component = () => {
           }
         })
         .catch((err) => {
-          Println("Students", err.message, "error");
+          if (err.response) {
+            Println("Students", err.response.data.message, "error")
+          } else {
+            Println("Students", err.message, "error")
+          }
         })
         .finally(() => {
           setLoading(false);
@@ -174,7 +182,6 @@ const Students: Component = () => {
 
     if (siswa && pengguna && pengguna.role == "user") {
       setStudent(siswa);
-      setLoggedIn(true);
       setData({
         first_name: siswa.first_name || "",
         last_name: siswa.last_name || "",
@@ -187,6 +194,7 @@ const Students: Component = () => {
         ielts_score: siswa.ielts_score || 0,
       });
 
+      setLoggedIn(true);
       setLoading(false);
     } else if (pengguna && pengguna.role == "admin") {
       Api.get("student")
@@ -204,11 +212,17 @@ const Students: Component = () => {
           }
         })
         .catch((err) => {
-          Println("Students", err.message, "error")
+          if (err.response) {
+            Println("Students", err.response.data.message, "error")
+          } else {
+            Println("Students", err.message, "error")
+          }
         })
         .finally(() => {
           setLoading(false)
         });
+    } else {
+      setLoading(false);
     }
   }
 
@@ -271,7 +285,7 @@ const Students: Component = () => {
                     type="number"
                     id="register_number"
                     name="register_number"
-                    placeholder="register_number"
+                    placeholder="NIK"
                     value={data().register_number}
                     disabled={loading()}
                     onchange={handleChange} 
@@ -336,7 +350,7 @@ const Students: Component = () => {
                     class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   />
                 </div>
-                {student == null && !loggedIn() ? (
+                {student() == null && !loggedIn() ? (
                   <button
                     type="submit" onclick={handleValidation} disabled={loading()}
                     class="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
@@ -358,7 +372,7 @@ const Students: Component = () => {
           </div>
         </section>
       ) : (
-        <div class="w-full">
+        <div class="w-full mt-12">
           {loading() ? null : <GridData data={students()} field={field} />}
         </div>
       )}
