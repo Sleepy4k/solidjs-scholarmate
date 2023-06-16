@@ -8,11 +8,9 @@ import { Component, createSignal, Show } from "solid-js";
 
 const Navbar: Component<any> = (props) => {
   const menu: any = "MENU"
-  const navigate = useNavigate();
-  const [openMatMenu, setOpenMatMenu] = createSignal(false);
+  const navigate = useNavigate()
   const user = getStorage("user")
-
-
+  const [openMatMenu, setOpenMatMenu] = createSignal(false);
 
   const onLogout = () => {
     swal({
@@ -39,7 +37,11 @@ const Navbar: Component<any> = (props) => {
           }
         })
         .catch((err) => {
-          Println("Dashboard", err.message, "error");
+          if (err.response) {
+            Println("Students", err.response.data.message, "error")
+          } else {
+            Println("Students", err.message, "error")
+          }
         });
       }
     });
@@ -52,7 +54,6 @@ const Navbar: Component<any> = (props) => {
           <Dynamic component={Icons[menu]} />
         </button>
       </div>
-
       <div class="flex items-center">
         <h1 class="m-5">{user.email}</h1>
         <div class="relative">
@@ -66,14 +67,14 @@ const Navbar: Component<any> = (props) => {
           <Show when={openMatMenu() == true}>
             <div class="fixed inset-0 z-10 w-full h-screen" onClick={() => setOpenMatMenu(!openMatMenu())}></div>
           </Show>
-
           <div>
-              <Show when={openMatMenu() == true} fallback={<></>}>
+            <Show when={openMatMenu() == true} fallback={<></>}>
               <div class="transition delay-100 duration-700 ease-in-out absolute right-0 z-20 w-48 py-2 bg-white rounded-b-lg shadow-xl">
                 <A
                   href="#"
                   onclick={onLogout}
-                  class="block border-t px-4 py-2 text-sm text-dark-purple hover:bg-dark-purple hover:text-white">Log out</A>                    
+                  class="block border-t px-4 py-2 text-sm text-dark-purple hover:bg-dark-purple hover:text-white"
+                >Log out</A>                    
               </div>
             </Show>
           </div>

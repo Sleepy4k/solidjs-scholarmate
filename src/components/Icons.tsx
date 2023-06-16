@@ -2,6 +2,7 @@ import { BsCartPlus } from 'solid-icons/bs'
 import { TiContacts } from 'solid-icons/ti'
 import { SiBuildkite } from 'solid-icons/si'
 import { CgMenuRightAlt } from 'solid-icons/cg'
+import { BiSolidCategory } from 'solid-icons/bi'
 import { BiSolidHandRight } from 'solid-icons/bi'
 import { BsChatSquareQuote } from 'solid-icons/bs'
 import { RiBusinessGlobalLine } from 'solid-icons/ri'
@@ -10,7 +11,6 @@ import { RiSystemSettings4Line } from 'solid-icons/ri'
 import { RiArrowsArrowDropDownFill } from 'solid-icons/ri'
 import { RiDocumentContactsBookLine } from 'solid-icons/ri'
 import { AiOutlineDashboard, AiOutlineHome } from "solid-icons/ai";
-import { BiSolidCategory } from 'solid-icons/bi'
 
 const Category = (size: number = 34, color: string = "#94C6F2") =>  <BiSolidCategory size={24} color="#94C6F2" />;
 const Home = (size: number = 24, color: string = "#ffffff") =>  <AiOutlineHome size={24} color={color} />;

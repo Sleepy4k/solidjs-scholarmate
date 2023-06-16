@@ -26,7 +26,7 @@ const Sidebar: Component<any> = (props) => {
           <For each={menus.Menus}>{(menu, index) =>
             <>
               {menu.role === 'any' || menu.role === user.role ? (
-                <Show when={menu.Type == 'MENU'} fallback={<div class={`border-dashed border-light-white border origin-left duration-200 mt-4 mb-4`}></div>}>
+                <Show when={menu.Type == 'MENU'} fallback={<div class={`border-dashed border-black border origin-left duration-200 mt-4 mb-4`}></div>}>
                   <A href={menu.link}>
                     <div class={`text-neutral-700 font-semibold text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-2  ${location.pathname == menu.link && 'bg-light-white'}`}>
                       <Dynamic component={Icons[menu.Icon]} /><span class={`origin-left duration-200`}>  {menu.title}</span>
