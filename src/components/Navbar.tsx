@@ -57,7 +57,7 @@ const Navbar: Component<any> = (props) => {
       <div class="flex items-center">
         <h1 class="m-5">{user.email}</h1>
         <div class="relative">
-          <button class="relative z-10 block w-14 h-14 overflow-hidden rounded-full shadow focus:outline-none border-2 border-black" onClick={() => setOpenMatMenu(!openMatMenu())}>
+          <button class="relative z-10 block w-16 h-16 overflow-hidden rounded-full shadow focus:outline-none border-4 border-blue-400" onClick={() => setOpenMatMenu(!openMatMenu())}>
             <img
               class="object-cover w-full h-full"
               src="./src/assets/profile.jpg"
