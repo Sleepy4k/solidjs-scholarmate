@@ -7,7 +7,7 @@ import { Println, deleteStorage, getStorage } from "../utils";
 import { Component, createSignal, Show } from "solid-js";
 
 const Navbar: Component<any> = (props) => {
-  const menu: any = "MENU"
+  const menu: any = "Menu"
   const navigate = useNavigate()
   const user = getStorage("user")
   const [openMatMenu, setOpenMatMenu] = createSignal(false);
