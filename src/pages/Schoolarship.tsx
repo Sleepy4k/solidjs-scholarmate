@@ -27,30 +27,34 @@ const Schoolarship: Component = () => {
   };
 
   const handleApply = (params: any) => {
-    Api.post("application", {
-      schoolarship_id: params.data.id,
-      univ_id: params.data.univ_id,
-      student_id: student.id,
-      status: "pending",
-      major: params.data.univ_major
-    }).then((res) => {
-      const value = res.data;
-
-      if (value.status === "success") {
-        Println("Students", value.message, "success");
-      } else if (value.status == "failed") {
-        Println("Students", value.message, "error");
-      } else {
-        Println("Students", "Something went wrong!", "error");
-      }
-    })
-    .catch((err) => {
-      if (err.response) {
-        Println("Students", err.response.data.message, "error")
-      } else {
-        Println("Students", err.message, "error")
-      }
-    });
+    if (student) {
+      Api.post("application", {
+        schoolarship_id: params.data.id,
+        univ_id: params.data.univ_id,
+        student_id: student.id,
+        status: "pending",
+        major: params.data.univ_major
+      }).then((res) => {
+        const value = res.data;
+  
+        if (value.status === "success") {
+          Println("Students", value.message, "success");
+        } else if (value.status == "failed") {
+          Println("Students", value.message, "error");
+        } else {
+          Println("Students", "Something went wrong!", "error");
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          Println("Students", err.response.data.message, "error")
+        } else {
+          Println("Students", err.message, "error")
+        }
+      });
+    } else {
+      Println("Students", "You must registered as a student", "error");
+    }
   }
 
   const handleEdit = (params: any) => {
@@ -160,7 +164,7 @@ const Schoolarship: Component = () => {
     const pengguna = getStorage("user")
     const siswa = getStorage("student")
 
-    if (pengguna.role != "admin") {
+    if (pengguna.role != "admin" && siswa) {
       await Api.get("application/" + siswa.id)
         .then((res) => {
           const value = res.data;
