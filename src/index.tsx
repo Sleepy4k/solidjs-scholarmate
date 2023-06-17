@@ -1,4 +1,5 @@
 import './index.css';
+import { Toaster } from "solid-toast";
 import App from './App';
 import { render } from 'solid-js/web';
 import { Router } from "@solidjs/router";
@@ -17,6 +18,7 @@ document.title = title + ' Mates';
 render(() => (
   <Router>
     <App />
+    <Toaster />
   </Router>
 ), document.getElementById('root') as HTMLElement);
 

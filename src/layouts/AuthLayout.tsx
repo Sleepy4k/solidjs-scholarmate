@@ -1,4 +1,3 @@
-import { Toaster } from "solid-toast";
 import { checkCookie } from "../utils";
 import { useNavigate } from "@solidjs/router";
 import { Sidebar, Navbar, Loader } from "../components";
@@ -6,7 +5,7 @@ import { Component, createEffect, createSignal } from "solid-js";
 
 const AuthLayout: Component<{ children: any, onFinish: () => void }> = (props: any) => {
   const navigate = useNavigate();
-  const [open, setOpen] = createSignal(true);
+  const [open, setOpen] = createSignal(false);
   const [loading, setLoading] = createSignal(true);
 
   createEffect(async () => {
@@ -33,7 +32,6 @@ const AuthLayout: Component<{ children: any, onFinish: () => void }> = (props: a
               </div>
             </main>
           </div>
-          <Toaster />
         </div>
       )}
     </>
