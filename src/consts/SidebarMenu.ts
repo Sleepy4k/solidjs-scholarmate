@@ -5,7 +5,7 @@ const SidebarMenu = [
   { title: "Schoolarship", Icon: "Brief", Type: "MENU", link: "/schoolarship", role: "any" },
   { title: "University", Icon: "uni", Type: "MENU", link: "/university", role: "any" },
   { title: "", Icon: "", Type: "DIVIDER", link: "", role: "admin"},
-  { title: "User", Icon: "Menu", Type: "MENU", link: "/user", role: "admin" },
+  { title: "User", Icon: "User", Type: "MENU", link: "/user", role: "admin" },
 ]
 
 export default SidebarMenu;

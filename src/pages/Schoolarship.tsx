@@ -38,22 +38,22 @@ const Schoolarship: Component = () => {
         const value = res.data;
   
         if (value.status === "success") {
-          Println("Students", value.message, "success");
+          Println("Schoolarship", value.message, "success");
         } else if (value.status == "failed") {
-          Println("Students", value.message, "error");
+          Println("Schoolarship", value.message, "error");
         } else {
-          Println("Students", "Something went wrong!", "error");
+          Println("Schoolarship", "Something went wrong!", "error");
         }
       })
       .catch((err) => {
         if (err.response) {
-          Println("Students", err.response.data.message, "error")
+          Println("Schoolarship", err.response.data.message, "error")
         } else {
-          Println("Students", err.message, "error")
+          Println("Schoolarship", err.message, "error")
         }
       });
     } else {
-      Println("Students", "You must registered as a student", "error");
+      Println("Schoolarship", "You must registered as a student", "error");
     }
   }
 
@@ -75,33 +75,33 @@ const Schoolarship: Component = () => {
 
     if (!schoolarship().name) {
       formIsValid = false;
-      Println("Students", "Name cannot be empty!", "error");
+      Println("Schoolarship", "Name cannot be empty!", "error");
     }
 
     if (!schoolarship().quantity) {
       formIsValid = false;
-      Println("Students", "Quantity cannot be empty!", "error");
+      Println("Schoolarship", "Quantity cannot be empty!", "error");
     }
 
     if (!schoolarship().description) {
       formIsValid = false;
-      Println("Students", "Description cannot be empty!", "error");
+      Println("Schoolarship", "Description cannot be empty!", "error");
     }
 
     if (!schoolarship().requirement) {
       formIsValid = false;
-      Println("Students", "Requirement cannot be empty!", "error");
+      Println("Schoolarship", "Requirement cannot be empty!", "error");
     }
 
     if (!schoolarship().univ_id) {
       formIsValid = false;
-      Println("Students", "University cannot be empty!", "error");
+      Println("Schoolarship", "University cannot be empty!", "error");
     }
 
     if (formIsValid) {
       submitEdit()
     } else {
-      Println("Students", "Failed to edit schoolarship!", "error");
+      Println("Schoolarship", "Failed to edit schoolarship!", "error");
     }
   }
 
@@ -111,19 +111,19 @@ const Schoolarship: Component = () => {
         const value = res.data;
 
         if (value.status === "success") {
-          Println("Students", value.message, "success");
+          Println("Schoolarship", value.message, "success");
           setCurrentPage(1)
         } else if (value.status == "failed") {
-          Println("Students", value.message, "error");
+          Println("Schoolarship", value.message, "error");
         } else {
-          Println("Students", "Something went wrong!", "error");
+          Println("Schoolarship", "Something went wrong!", "error");
         }
       })
       .catch((err) => {
         if (err.response) {
-          Println("Students", err.response.data.message, "error")
+          Println("Schoolarship", err.response.data.message, "error")
         } else {
-          Println("Students", err.message, "error")
+          Println("Schoolarship", err.message, "error")
         }
       });
   }
@@ -142,18 +142,18 @@ const Schoolarship: Component = () => {
             const value = res.data;
 
             if (value.status === "success") {
-              Println("Students", value.message, "success");
+              Println("Schoolarship", value.message, "success");
             } else if (value.status == "failed") {
-              Println("Students", value.message, "error");
+              Println("Schoolarship", value.message, "error");
             } else {
-              Println("Students", "Something went wrong!", "error");
+              Println("Schoolarship", "Something went wrong!", "error");
             }
           })
           .catch((err) => {
             if (err.response) {
-              Println("Students", err.response.data.message, "error")
+              Println("Schoolarship", err.response.data.message, "error")
             } else {
-              Println("Students", err.message, "error")
+              Println("Schoolarship", err.message, "error")
             }
           });
       };
@@ -173,16 +173,16 @@ const Schoolarship: Component = () => {
           if (value.status === "success") {
             setApplication(data)
           } else if (value.status == "failed") {
-            Println("Students", value.message, "error");
+            Println("Schoolarship", value.message, "error");
           } else {
-            Println("Students", "Something went wrong!", "error");
+            Println("Schoolarship", "Something went wrong!", "error");
           }
         })
         .catch((err) => {
           if (err.response) {
-            Println("Students", err.response.data.message, "error")
+            Println("Schoolarship", err.response.data.message, "error")
           } else {
-            Println("Students", err.message, "error")
+            Println("Schoolarship", err.message, "error")
           }
         });
     }
@@ -195,16 +195,16 @@ const Schoolarship: Component = () => {
         if (value.status === "success") {
           setSchoolarships(data)
         } else if (value.status == "failed") {
-          Println("Students", value.message, "error");
+          Println("Schoolarship", value.message, "error");
         } else {
-          Println("Students", "Something went wrong!", "error");
+          Println("Schoolarship", "Something went wrong!", "error");
         }
       })
       .catch((err) => {
         if (err.response) {
-          Println("Students", err.response.data.message, "error")
+          Println("Schoolarship", err.response.data.message, "error")
         } else {
-          Println("Students", err.message, "error")
+          Println("Schoolarship", err.message, "error")
         }
       });
 

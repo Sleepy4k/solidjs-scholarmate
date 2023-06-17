@@ -26,7 +26,7 @@ const Sidebar: Component<any> = (props) => {
           <For each={menus.Menus}>{(menu, index) =>
             <>
               {menu.role === 'any' || menu.role === user.role ? (
-                <Show when={menu.Type == 'MENU'} fallback={                <div class="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">
+                <Show when={menu.Type == 'MENU'} fallback={<div class="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">
                 <p class="text-center font-semibold text-sm mx-4 mb-0">Main</p>
               </div>}>
                   <A href={menu.link}>
