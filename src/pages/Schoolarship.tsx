@@ -16,7 +16,6 @@ const Schoolarship: Component = () => {
   const [schoolarship, setSchoolarship] = createSignal({
     id: 0,
     name: "",
-    major: "",
     quantity: "",
     description: "",
     requirement: "",
@@ -33,7 +32,7 @@ const Schoolarship: Component = () => {
       univ_id: params.data.univ_id,
       student_id: student.id,
       status: "pending",
-      major: params.data.major
+      major: params.data.univ_major
     }).then((res) => {
       const value = res.data;
 
@@ -58,7 +57,6 @@ const Schoolarship: Component = () => {
     setSchoolarship({
       id: params.data.id,
       name: params.data.name,
-      major: params.data.major,
       quantity: params.data.quantity,
       description: params.data.description,
       requirement: params.data.requirement,
@@ -74,11 +72,6 @@ const Schoolarship: Component = () => {
     if (!schoolarship().name) {
       formIsValid = false;
       Println("Students", "Name cannot be empty!", "error");
-    }
-
-    if (!schoolarship().major) {
-      formIsValid = false;
-      Println("Students", "Major cannot be empty!", "error");
     }
 
     if (!schoolarship().quantity) {
@@ -214,8 +207,8 @@ const Schoolarship: Component = () => {
     field = [
       { field: "id", headerName: "ID" },
       { field: "name" },
-      { field: "major" },
       { field: "univ_name", headerName: "University" },
+      { field: "univ_major", headerName: "Major" },
       { field: "description" },
       { field: "quantity" },
       { field: "requirement" },
@@ -234,14 +227,14 @@ const Schoolarship: Component = () => {
     if (pengguna.role != "admin") {
       field = [
         { field: "name" },
-        { field: "major" },
         { field: "univ_name", headerName: "University" },
+        { field: "univ_major", headerName: "Major" },
         { field: "description" },
         { field: "quantity" },
         { field: "requirement" },
         { field: "action", cellRenderer: (params: any) => (
           <>
-            {application().filter((item: any) => item.univ_id === params.data.univ_id).length > 0 && application().filter((item: any) => item.major === params.data.major).length > 0 ? (
+            {application().filter((item: any) => item.univ_id === params.data.univ_id).length > 0 && application().filter((item: any) => item.major === params.data.univ_major).length > 0 ? (
               <Button variant="contained" color="warning" disabled>
                 Applied
               </Button>
@@ -282,20 +275,6 @@ const Schoolarship: Component = () => {
                     name="name"
                     placeholder="Name"
                     value={schoolarship().name}
-                    disabled={loading()}
-                    onchange={handleChange} 
-                    class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="major">Major</label>
-                  <input 
-                    required
-                    type="text"
-                    id="major"
-                    name="major"
-                    placeholder="Major"
-                    value={schoolarship().major}
                     disabled={loading()}
                     onchange={handleChange} 
                     class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
