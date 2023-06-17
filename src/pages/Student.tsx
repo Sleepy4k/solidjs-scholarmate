@@ -231,7 +231,7 @@ const Students: Component = () => {
       {user.role == "user" ? (
         <section>
           <div class="py-12 h-full">
-            <div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
+            <div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-500">
               <div class="md:w-8/12 lg:w-5/12 lg:ml-20">
                 <div class="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">
                   <p class="text-center font-semibold mx-4 mb-0">Data Diri</p>

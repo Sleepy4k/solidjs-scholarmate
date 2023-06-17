@@ -163,7 +163,7 @@ const Dashboard: Component = () => {
       <div class="w-full">
         <div class="grid gap-2 grid-cols-12">
           <div class="col-span-12 sm:col-span-6 xl:col-span-3">
-            <div class="flex align-middle py-4 pl-4 pr-4 h-20 bg-white items-center space-x-4 rounded-lg border shadow-md dark:bg-gray-800 dark:border-gray-700">
+            <div class="flex align-middle py-4 pl-4 pr-4 h-20 bg-white items-center space-x-4 rounded-lg border shadow-md dark:bg-gray-500 dark:border-gray-700">
               <div class="flex-1 min-w-0">
                 <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
                   Total Applications
@@ -175,7 +175,7 @@ const Dashboard: Component = () => {
             </div>
           </div>
           <div class="col-span-12  sm:col-span-6 xl:col-span-3">
-            <div class="flex align-middle py-4 h-20 pl-4 pr-4 items-center rounded-lg  bg-white space-x-4 border shadow-md  dark:bg-gray-800 dark:border-gray-700">
+            <div class="flex align-middle py-4 h-20 pl-4 pr-4 items-center rounded-lg  bg-white space-x-4 border shadow-md  dark:bg-gray-500 dark:border-gray-700">
               <div class="flex-1 min-w-0">
                 <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
                   Applications Accepted
@@ -187,7 +187,7 @@ const Dashboard: Component = () => {
             </div>
           </div>
           <div class="col-span-12  sm:col-span-6 xl:col-span-3">
-            <div class="flex align-middle py-4  h-20  pl-4 pr-4 items-center space-x-4 rounded-lg bg-white border shadow-md  dark:bg-gray-800 dark:border-gray-700">
+            <div class="flex align-middle py-4  h-20  pl-4 pr-4 items-center space-x-4 rounded-lg bg-white border shadow-md  dark:bg-gray-500 dark:border-gray-700">
               <div class="flex-1 min-w-0">
                 <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
                   Applications Declined
@@ -199,7 +199,7 @@ const Dashboard: Component = () => {
             </div>
           </div>
           <div class="col-span-12  sm:col-span-6 xl:col-span-3">
-            <div class="flex align-middle py-4 h-20  pl-4 pr-4 items-center rounded-lg space-x-4 bg-white border shadow-md  dark:bg-gray-800 dark:border-gray-700">
+            <div class="flex align-middle py-4 h-20  pl-4 pr-4 items-center rounded-lg space-x-4 bg-white border shadow-md  dark:bg-gray-500 dark:border-gray-700">
               <div class="flex-1 min-w-0">
                 <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
                   Applications Pending
@@ -213,7 +213,7 @@ const Dashboard: Component = () => {
         </div>
         {user.role === "user" ? (
           <div class="grid gap-2 grid-cols-12 pt-2">
-            <div class="col-span-12 w-full px-6 sm:col-span-12 xl:col-span-3 bg-white rounded-lg border shadow-md dark:bg-gray-800 dark:border-gray-700">
+            <div class="col-span-12 w-full px-6 sm:col-span-12 xl:col-span-3 bg-white rounded-lg border shadow-md dark:bg-gray-500 dark:border-gray-700">
               <div class="flex justify-between items-center mb-4">
                 <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white mt-2">Forum Activity</h5>
               </div>
@@ -242,7 +242,7 @@ const Dashboard: Component = () => {
                 </ul>
               </div>
             </div>
-            <div class="col-span-12 w-full px-6 sm:col-span-12 xl:col-span-9 bg-white rounded-lg border shadow-md dark:bg-gray-800 dark:border-gray-700">
+            <div class="col-span-12 w-full px-6 sm:col-span-12 xl:col-span-9 bg-white rounded-lg border shadow-md dark:bg-gray-500 dark:border-gray-700">
               <h5 class="mb-3 text-base font-semibold text-gray-900 lg:text-xl dark:text-white">
                 My Applications
               </h5>
@@ -257,10 +257,10 @@ const Dashboard: Component = () => {
           </div>
         ) : (
           <div class="grid gap-2 grid-cols-12 pt-2">
-            <div class="col-span-12 w-full px-6 sm:col-span-12 xl:col-span-6 bg-white rounded-lg border shadow-md dark:bg-gray-800 dark:border-gray-700">
+            <div class="col-span-12 w-full px-6 sm:col-span-12 xl:col-span-6 bg-white rounded-lg border shadow-md dark:bg-gray-200 dark:border-gray-700">
               {loading() ? null : <PieChart name="Schoolarships Program" tag="my-app-data" category="name" value="quantity" data={schoolarships()} />}
             </div>
-            <div class="col-span-12 w-full px-6 sm:col-span-12 xl:col-span-6 bg-white rounded-lg border shadow-md dark:bg-gray-800 dark:border-gray-700">
+            <div class="col-span-12 w-full px-6 sm:col-span-12 xl:col-span-6 bg-white rounded-lg border shadow-md dark:bg-gray-200 dark:border-gray-700">
               {loading() ? null : <PieChart name="Universities Quota" tag="univ-data" category="alias" value="quantity" data={universities()} />}
             </div>
           </div>

@@ -205,7 +205,7 @@ const University: Component = () => {
       ) : (
         <section>
           <div class="py-12 h-full">
-            <div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
+            <div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-500">
               <div class="md:w-8/12 lg:w-5/12 lg:ml-20">
                 <div class="mb-3">
                   <label for="name">Name</label>
