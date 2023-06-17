@@ -26,7 +26,7 @@ const AuthLayout: Component<{ children: any, onFinish: () => void }> = (props: a
           <Sidebar open={open} setOpen={setOpen}   />
           <div class="flex-1 flex flex-col overflow-hidden">
             <Navbar open={open} setOpen={setOpen} />
-            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50">
               <div class="p-4">
                 {props.children}
               </div>
