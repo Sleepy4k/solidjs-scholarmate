@@ -3,8 +3,8 @@ import { Icons } from "./Icons";
 import { Api } from "../services";
 import { Dynamic } from "solid-js/web";
 import { useNavigate, A } from "@solidjs/router";
-import { Println, deleteStorage, getStorage } from "../utils";
 import { Component, createSignal, Show } from "solid-js";
+import { Println, deleteStorage, getStorage } from "../utils";
 
 const Navbar: Component<any> = (props) => {
   const menu: any = "Menu"
