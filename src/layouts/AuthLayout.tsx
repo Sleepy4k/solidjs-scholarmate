@@ -9,7 +9,7 @@ const AuthLayout: Component<{ children: any, onFinish: () => void }> = (props: a
   const [loading, setLoading] = createSignal(true);
 
   createEffect(async () => {
-    const isUserLoggedIn = checkCookie("schoolarship_auth_token");
+    const isUserLoggedIn = checkCookie("scholarmate_auth_token");
 
     if (!isUserLoggedIn) {
       navigate("/login");
