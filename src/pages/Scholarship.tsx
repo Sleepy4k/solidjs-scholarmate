@@ -6,14 +6,14 @@ import AuthLayout from "../layouts/AuthLayout";
 import { Println, getStorage } from "../utils";
 import { Component, createSignal } from "solid-js";
 
-const Schoolarship: Component = () => {
+const Scholarship: Component = () => {
   let field = []
   const student = getStorage("student")
   const [loading, setLoading] = createSignal(true);
   const [currentPage, setCurrentPage] = createSignal(1);
   const [application, setApplication] = createSignal([]);
-  const [schoolarships, setSchoolarships] = createSignal([]);
-  const [schoolarship, setSchoolarship] = createSignal({
+  const [scholarships, setScholarships] = createSignal([]);
+  const [scholarship, setScholarship] = createSignal({
     id: 0,
     name: "",
     quantity: "",
@@ -23,13 +23,13 @@ const Schoolarship: Component = () => {
   });
 
   const handleChange = (e: any) => {
-    setSchoolarship({ ...schoolarship(), [e.target.name]: e.target.type === 'number' ? parseInt(e.target.value) : e.target.value });
+    setScholarship({ ...scholarship(), [e.target.name]: e.target.type === 'number' ? parseInt(e.target.value) : e.target.value });
   };
 
   const handleApply = (params: any) => {
     if (student) {
       Api.post("application", {
-        schoolarship_id: params.data.id,
+        scholarship_id: params.data.id,
         univ_id: params.data.univ_id,
         student_id: student.id,
         status: "pending",
@@ -38,27 +38,27 @@ const Schoolarship: Component = () => {
         const value = res.data;
   
         if (value.status === "success") {
-          Println("Schoolarship", value.message, "success");
+          Println("Scholarship", value.message, "success");
         } else if (value.status == "failed") {
-          Println("Schoolarship", value.message, "error");
+          Println("Scholarship", value.message, "error");
         } else {
-          Println("Schoolarship", "Something went wrong!", "error");
+          Println("Scholarship", "Something went wrong!", "error");
         }
       })
       .catch((err) => {
         if (err.response) {
-          Println("Schoolarship", err.response.data.message, "error")
+          Println("Scholarship", err.response.data.message, "error")
         } else {
-          Println("Schoolarship", err.message, "error")
+          Println("Scholarship", err.message, "error")
         }
       });
     } else {
-      Println("Schoolarship", "You must registered as a student", "error");
+      Println("Scholarship", "You must registered as a student", "error");
     }
   }
 
   const handleEdit = (params: any) => {
-    setSchoolarship({
+    setScholarship({
       id: params.data.id,
       name: params.data.name,
       quantity: params.data.quantity,
@@ -73,57 +73,57 @@ const Schoolarship: Component = () => {
   const handleValidation = () => {
     let formIsValid = true;
 
-    if (!schoolarship().name) {
+    if (!scholarship().name) {
       formIsValid = false;
-      Println("Schoolarship", "Name cannot be empty!", "error");
+      Println("Scholarship", "Name cannot be empty!", "error");
     }
 
-    if (!schoolarship().quantity) {
+    if (!scholarship().quantity) {
       formIsValid = false;
-      Println("Schoolarship", "Quantity cannot be empty!", "error");
+      Println("Scholarship", "Quantity cannot be empty!", "error");
     }
 
-    if (!schoolarship().description) {
+    if (!scholarship().description) {
       formIsValid = false;
-      Println("Schoolarship", "Description cannot be empty!", "error");
+      Println("Scholarship", "Description cannot be empty!", "error");
     }
 
-    if (!schoolarship().requirement) {
+    if (!scholarship().requirement) {
       formIsValid = false;
-      Println("Schoolarship", "Requirement cannot be empty!", "error");
+      Println("Scholarship", "Requirement cannot be empty!", "error");
     }
 
-    if (!schoolarship().univ_id) {
+    if (!scholarship().univ_id) {
       formIsValid = false;
-      Println("Schoolarship", "University cannot be empty!", "error");
+      Println("Scholarship", "University cannot be empty!", "error");
     }
 
     if (formIsValid) {
       submitEdit()
     } else {
-      Println("Schoolarship", "Failed to edit schoolarship!", "error");
+      Println("Scholarship", "Failed to edit scholarship!", "error");
     }
   }
 
   const submitEdit = () => {
-    Api.put("schoolarship/" + schoolarship().id, schoolarship())
+    Api.put("scholarship/" + scholarship().id, scholarship())
       .then((res) => {
         const value = res.data;
 
         if (value.status === "success") {
-          Println("Schoolarship", value.message, "success");
+          Println("Scholarship", value.message, "success");
           setCurrentPage(1)
         } else if (value.status == "failed") {
-          Println("Schoolarship", value.message, "error");
+          Println("Scholarship", value.message, "error");
         } else {
-          Println("Schoolarship", "Something went wrong!", "error");
+          Println("Scholarship", "Something went wrong!", "error");
         }
       })
       .catch((err) => {
         if (err.response) {
-          Println("Schoolarship", err.response.data.message, "error")
+          Println("Scholarship", err.response.data.message, "error")
         } else {
-          Println("Schoolarship", err.message, "error")
+          Println("Scholarship", err.message, "error")
         }
       });
   }
@@ -131,29 +131,29 @@ const Schoolarship: Component = () => {
   const handleDelete = (params: any) => {
     swal({
       title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this schoolarship!",
+      text: "Once deleted, you will not be able to recover this scholarship!",
       icon: "warning",
       buttons: ["Cancel", "Delete"],
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        Api.delete("schoolarship/" + params.data.id)
+        Api.delete("scholarship/" + params.data.id)
           .then((res) => {
             const value = res.data;
 
             if (value.status === "success") {
-              Println("Schoolarship", value.message, "success");
+              Println("Scholarship", value.message, "success");
             } else if (value.status == "failed") {
-              Println("Schoolarship", value.message, "error");
+              Println("Scholarship", value.message, "error");
             } else {
-              Println("Schoolarship", "Something went wrong!", "error");
+              Println("Scholarship", "Something went wrong!", "error");
             }
           })
           .catch((err) => {
             if (err.response) {
-              Println("Schoolarship", err.response.data.message, "error")
+              Println("Scholarship", err.response.data.message, "error")
             } else {
-              Println("Schoolarship", err.message, "error")
+              Println("Scholarship", err.message, "error")
             }
           });
       };
@@ -173,38 +173,38 @@ const Schoolarship: Component = () => {
           if (value.status === "success") {
             setApplication(data)
           } else if (value.status == "failed") {
-            Println("Schoolarship", value.message, "error");
+            Println("Scholarship", value.message, "error");
           } else {
-            Println("Schoolarship", "Something went wrong!", "error");
+            Println("Scholarship", "Something went wrong!", "error");
           }
         })
         .catch((err) => {
           if (err.response) {
-            Println("Schoolarship", err.response.data.message, "error")
+            Println("Scholarship", err.response.data.message, "error")
           } else {
-            Println("Schoolarship", err.message, "error")
+            Println("Scholarship", err.message, "error")
           }
         });
     }
 
-    await Api.get("schoolarship")
+    await Api.get("scholarship")
       .then((res) => {
         const value = res.data;
         const data = value.data
 
         if (value.status === "success") {
-          setSchoolarships(data)
+          setScholarships(data)
         } else if (value.status == "failed") {
-          Println("Schoolarship", value.message, "error");
+          Println("Scholarship", value.message, "error");
         } else {
-          Println("Schoolarship", "Something went wrong!", "error");
+          Println("Scholarship", "Something went wrong!", "error");
         }
       })
       .catch((err) => {
         if (err.response) {
-          Println("Schoolarship", err.response.data.message, "error")
+          Println("Scholarship", err.response.data.message, "error")
         } else {
-          Println("Schoolarship", err.message, "error")
+          Println("Scholarship", err.message, "error")
         }
       });
 
@@ -263,7 +263,7 @@ const Schoolarship: Component = () => {
     <AuthLayout onFinish={onFinish}>
       {currentPage() === 1 ? (
         <div class="w-full mt-12">
-          {loading() ? null : <GridData data={schoolarships()} field={field} />}
+          {loading() ? null : <GridData data={scholarships()} field={field} />}
         </div>
       ) : (
         <section>
@@ -278,7 +278,7 @@ const Schoolarship: Component = () => {
                     id="name"
                     name="name"
                     placeholder="Name"
-                    value={schoolarship().name}
+                    value={scholarship().name}
                     disabled={loading()}
                     onchange={handleChange} 
                     class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -292,7 +292,7 @@ const Schoolarship: Component = () => {
                     id="quantity"
                     name="quantity"
                     placeholder="0"
-                    value={schoolarship().quantity}
+                    value={scholarship().quantity}
                     disabled={loading()}
                     onchange={handleChange} 
                     class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -306,7 +306,7 @@ const Schoolarship: Component = () => {
                     id="description"
                     name="description"
                     placeholder="Description"
-                    value={schoolarship().description}
+                    value={scholarship().description}
                     disabled={loading()}
                     onchange={handleChange} 
                     class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -319,7 +319,7 @@ const Schoolarship: Component = () => {
                     type="text"
                     id="requirement"
                     name="requirement"
-                    value={schoolarship().requirement}
+                    value={scholarship().requirement}
                     disabled={loading()}
                     onchange={handleChange} 
                     class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -348,4 +348,4 @@ const Schoolarship: Component = () => {
   );
 };
 
-export default Schoolarship;
+export default Scholarship;

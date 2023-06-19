@@ -15,7 +15,7 @@ const Dashboard: Component = () => {
   const [forum, setForum] = createSignal([]);
   const [loading, setLoading] = createSignal(true);
   const [universities, setUniversities] = createSignal([]);
-  const [schoolarships, setSchoolarships] = createSignal([]);
+  const [scholarships, setScholarships] = createSignal([]);
   const [myapplications, setMyApplications] = createSignal([]);
   const [applications, setApplications] = createSignal({
     total: 0,
@@ -113,12 +113,12 @@ const Dashboard: Component = () => {
           }
         });
 
-      await Api.get("schoolarship")
+      await Api.get("scholarship")
         .then((res) => {
           const value = res.data;
   
           if (value.status === "success") {
-            setSchoolarships(value.data);
+            setScholarships(value.data);
           } else if (value.status === "failed") {
             Println("Dashboard", value.message, "error");
           } else {
@@ -258,7 +258,7 @@ const Dashboard: Component = () => {
         ) : (
           <div class="grid gap-2 grid-cols-12 pt-2">
             <div class="col-span-12 w-full px-6 sm:col-span-12 xl:col-span-6 bg-white rounded-lg border shadow-md dark:bg-gray-200 dark:border-gray-700">
-              {loading() ? null : <PieChart name="Schoolarships Program" tag="my-app-data" category="name" value="quantity" data={schoolarships()} />}
+              {loading() ? null : <PieChart name="Scholarships Program" tag="my-app-data" category="name" value="quantity" data={scholarships()} />}
             </div>
             <div class="col-span-12 w-full px-6 sm:col-span-12 xl:col-span-6 bg-white rounded-lg border shadow-md dark:bg-gray-200 dark:border-gray-700">
               {loading() ? null : <PieChart name="Universities Quota" tag="univ-data" category="alias" value="quantity" data={universities()} />}
