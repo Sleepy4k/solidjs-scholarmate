@@ -119,7 +119,7 @@ const Students: Component = () => {
   // submit Button
   const handleSubmit = async () => {
     if (student() && loggedIn()) {
-      Api.put("join/" + student().id, data())
+      Api.put("apply/" + student().id, data())
       .then((res) => {
         const value = res.data;
 
@@ -143,7 +143,7 @@ const Students: Component = () => {
         setLoading(false);
       });
     } else {
-      Api.post("join", data())
+      Api.post("apply", data())
         .then((res) => {
           const value = res.data;
   
