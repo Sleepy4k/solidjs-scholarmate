@@ -1,15 +1,18 @@
-import { Component } from "solid-js";
+import { Component } from 'solid-js';
 
-const Loader: Component<{ title: string }> = (props) => {
+interface LoaderProps {
+  title: string;
+}
+
+const Loader: Component<LoaderProps> = (props) => {
   return (
-    <div
-      class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
-      role="status">
-      <span
-        class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
-      >{props.title}</span>
+    <div class='h-screen'>
+      <div class='flex justify-center items-center h-full'>
+        <img class='h-16 w-16' src='https://icons8.com/preloaders/preloaders/1488/Iphone-spinner-2.gif' alt={props.title} />
+        <div>{props.title}</div>
+      </div>
     </div>
-  )
+  );
 };
 
 export default Loader;

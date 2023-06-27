@@ -1,11 +1,18 @@
-import { Component } from "solid-js";
-import Card from "@suid/material/Card";
-import { CardActionArea } from "@suid/material";
-import CardMedia from "@suid/material/CardMedia";
-import Typography from "@suid/material/Typography";
-import CardContent from "@suid/material/CardContent";
+import { Component } from 'solid-js';
+import Card from '@suid/material/Card';
+import { CardActionArea } from '@suid/material';
+import CardMedia from '@suid/material/CardMedia';
+import Typography from '@suid/material/Typography';
+import CardContent from '@suid/material/CardContent';
 
-const Cards: Component<{ name: string, major: string, status: string, image: string }> = (props) => {
+interface CardsProps {
+  name: string;
+  major: string;
+  status: string;
+  image: string;
+}
+
+const Cards: Component<CardsProps> = (props) => {
   return (
     <Card sx={{ maxWidth: 700 }}>
       <CardActionArea>
@@ -25,6 +32,6 @@ const Cards: Component<{ name: string, major: string, status: string, image: str
       </CardActionArea>
     </Card>
   );
-}
+};
 
 export default Cards;
