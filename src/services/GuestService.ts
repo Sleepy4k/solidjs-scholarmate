@@ -1,7 +1,7 @@
 /* eslint-disable solid/reactivity */
 import Api from './ApiService';
 
-interface GuestProps {
+interface IGuestProps {
   url: string;
   data?: any;
   success?: any;
@@ -11,7 +11,7 @@ interface GuestProps {
   finally?: any;
 }
 
-const initService = async (props: GuestProps, method: string) => {
+const initService = async (props: IGuestProps, method: string) => {
   const requestOption = {
     headers: props.headers,
     params: props.params
@@ -35,19 +35,19 @@ const initService = async (props: GuestProps, method: string) => {
 };
 
 const GuestService = {
-  get: async (props: GuestProps) => {
+  get: async (props: IGuestProps) => {
     await initService(props, 'get');
   },
-  post: async (props: GuestProps) => {
+  post: async (props: IGuestProps) => {
     await initService(props, 'post');
   },
-  put: async (props: GuestProps) => {
+  put: async (props: IGuestProps) => {
     await initService(props, 'put');
   },
-  patch: async (props: GuestProps) => {
+  patch: async (props: IGuestProps) => {
     await initService(props, 'patch');
   },
-  delete: async (props: GuestProps) => {
+  delete: async (props: IGuestProps) => {
     await initService(props, 'delete');
   }
 };

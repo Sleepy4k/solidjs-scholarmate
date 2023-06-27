@@ -2,7 +2,7 @@
 import Api from './ApiService';
 import { getCookie } from '@utils';
 
-interface authProps {
+interface IAuthProps {
   url: string;
   data?: any;
   success?: any;
@@ -14,7 +14,7 @@ interface authProps {
 
 const token = getCookie('scholarmate_auth_token');
 
-const initService = async (props: authProps, method: string) => {
+const initService = async (props: IAuthProps, method: string) => {
   const requestOption = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -41,19 +41,19 @@ const initService = async (props: authProps, method: string) => {
 };
 
 const AuthService = {
-  get: async (props: authProps) => {
+  get: async (props: IAuthProps) => {
     await initService(props, 'get');
   },
-  post: async (props: authProps) => {
+  post: async (props: IAuthProps) => {
     await initService(props, 'post');
   },
-  put: async (props: authProps) => {
+  put: async (props: IAuthProps) => {
     await initService(props, 'put');
   },
-  patch: async (props: authProps) => {
+  patch: async (props: IAuthProps) => {
     await initService(props, 'patch');
   },
-  delete: async (props: authProps) => {
+  delete: async (props: IAuthProps) => {
     await initService(props, 'delete');
   }
 };
