@@ -1,24 +1,24 @@
 import './index.css';
-import { Toaster } from "solid-toast";
 import App from './App';
 import { render } from 'solid-js/web';
-import { Router } from "@solidjs/router";
+import { Toaster } from 'solid-toast';
+import { Router } from '@solidjs/router';
 
 const root = document.getElementById('root');
-const title = import.meta.env.VITE_APP_NAME || 'SolidJS';
 
 if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
   throw new Error(
-    'Root element not found. Did you forget to add it to your index.html? Or maybe the id attribute got mispelled?',
+    'Root element not found. Did you forget to add it to your index.html? Or maybe the id attribute got misspelled?',
   );
 }
 
-document.title = title + ' Mates';
+const title = import.meta.env.VITE_APP_NAME;
+
+document.title = title ? title + ' Mate' : 'Solid App';
 
 render(() => (
   <Router>
     <App />
     <Toaster />
   </Router>
-), document.getElementById('root') as HTMLElement);
-
+), root!);
