@@ -1,5 +1,12 @@
-import Println from "./Debug";
-import { getCookie, checkCookie } from "./Cookie";
-import { getStorage, setStorage, deleteStorage } from "./LocalStorage";
+import Println from './Debug';
+import { getCookie, checkCookie } from './Cookie';
+import { getStorage, setStorage, deleteStorage } from './LocalStorage';
 
-export { Println, getCookie, checkCookie, getStorage, setStorage, deleteStorage };
+export {
+  Println,
+  getCookie,
+  getStorage,
+  setStorage,
+  checkCookie,
+  deleteStorage
+};

@@ -1,4 +1,4 @@
-import { createSignal } from "solid-js";
+import { createSignal } from 'solid-js';
 
 function getStorage(key: string, storage = localStorage) {
   const storedValue = storage.getItem(key);
@@ -11,7 +11,7 @@ function setStorage(key: string, value: any, storage = localStorage) {
   const storedValue = storage.getItem(key);
 
   if (storedValue) {
-    return
+    return;
   } else {
     storage.setItem(key, JSON.stringify(value));
   }
