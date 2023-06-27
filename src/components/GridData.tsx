@@ -4,12 +4,12 @@ import 'ag-grid-community/styles/ag-grid.css';
 import { Component, createResource } from 'solid-js';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 
-interface GridDataProps {
+interface IGridDataProps {
   data: any[];
   field: any[];
 }
 
-const GridData: Component<GridDataProps> = (props) => {
+const GridData: Component<IGridDataProps> = (props) => {
   const [rowData] = createResource(() => props.data);
   const defaultColDef: ColDef = {
     minWidth: 150,

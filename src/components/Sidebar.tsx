@@ -8,13 +8,13 @@ import { Component, For, Show, createEffect } from 'solid-js';
 
 const APP_NAME = import.meta.env.VITE_APP_NAME as string;
 
-interface SidebarProps {
+interface ISidebarProps {
   open: boolean
   // eslint-disable-next-line no-unused-vars
   setOpen: (value: boolean) => void
 }
 
-const Sidebar: Component<SidebarProps> = (props) => {
+const Sidebar: Component<ISidebarProps> = (props) => {
   const location = useLocation();
   const user = getStorage('user');
   const [menus, setMenus] = createStore({

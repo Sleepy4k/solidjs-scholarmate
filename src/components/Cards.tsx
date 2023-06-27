@@ -5,14 +5,14 @@ import CardMedia from '@suid/material/CardMedia';
 import Typography from '@suid/material/Typography';
 import CardContent from '@suid/material/CardContent';
 
-interface CardsProps {
+interface ICardsProps {
   name: string;
   major: string;
   status: string;
   image: string;
 }
 
-const Cards: Component<CardsProps> = (props) => {
+const Cards: Component<ICardsProps> = (props) => {
   return (
     <Card sx={{ maxWidth: 700 }}>
       <CardActionArea>

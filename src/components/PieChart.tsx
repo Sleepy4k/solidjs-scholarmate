@@ -3,7 +3,7 @@ import * as am4charts from '@amcharts/amcharts4/charts';
 import { onMount, Component, createEffect } from 'solid-js';
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 
-interface PieChartProps {
+interface IPieChartProps {
   name: string;
   tag: string;
   data: any[];
@@ -13,7 +13,7 @@ interface PieChartProps {
   width?: string;
 }
 
-const PieChart: Component<PieChartProps> = (props) => {
+const PieChart: Component<IPieChartProps> = (props) => {
   createEffect(() => {
     props.height ? props.height : '500px';
     props.width ? props.width : '100%';

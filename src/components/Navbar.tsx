@@ -6,12 +6,12 @@ import { useNavigate, A } from '@solidjs/router';
 import { Component, createSignal, Show } from 'solid-js';
 import { Println, deleteStorage, getStorage } from '@utils';
 
-interface NavbarProps {
+interface INavbarProps {
   // eslint-disable-next-line no-unused-vars
   setOpen: (value: boolean) => void;
 }
 
-const Navbar: Component<NavbarProps> = (props) => {
+const Navbar: Component<INavbarProps> = (props) => {
   const burgerIcon: any = 'Menu';
   const navigate = useNavigate();
   const user = getStorage('user');
