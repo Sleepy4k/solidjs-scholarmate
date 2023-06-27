@@ -1,84 +1,66 @@
 import { GuestLayout } from '@layouts';
 import { GuestService } from '@services';
+import { TextInput, Button } from '@components';
 import { useNavigate, A } from '@solidjs/router';
-import { Component, createSignal } from 'solid-js';
-import { Println, deleteStorage, setStorage } from '@utils';
-
-interface LoginData {
-  email: string;
-  password: string;
-}
+import { createFormGroup, createFormControl } from 'solid-forms';
+import { Component, createSignal, createEffect } from 'solid-js';
+import { Println, deleteStorage, setStorage, Validator } from '@utils';
 
 const Login: Component = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = createSignal<boolean>(false);
-  const [data, setData] = createSignal<LoginData>({
-    email: '',
-    password: '',
+  const group = createFormGroup({
+    email: createFormControl('', {
+      required: true,
+      validators: [Validator.required, Validator.email],
+    }),
+    password: createFormControl('', {
+      required: true,
+      validators: [Validator.required],
+    }),
+  });
+
+  createEffect(() => {
+    if (group.isDisabled || group.isValid) return;
   });
   
-  const handleChange = (e: any) => {
-    setData({ ...data(), [e.target.name]: e.target.value });
-  };
-
   const handleValidation = () => {
-    let formIsValid = true;
+    if (group.isSubmitted) {
+      Println('Login', 'Form already submitted', 'warn');
+      return;
+    }
+
+    if (!group.isValid) {
+      const errors = Object.values(group.errors);
+
+      for (let index = 0; index < errors.length; index++) {
+        Println('Login', `${errors[index]}`, 'error');
+      }
+
+      return;
+    }
+
+    group.markSubmitted(true);
+
     setLoading(true);
-
-    // Validasi buat Email
-    if (!data().email) {
-      formIsValid = false;
-      Println('Login', 'Email cannot be empty!', 'error');
-    } else if (typeof data().email !== 'undefined') {
-      let lastAtPos = data().email.lastIndexOf('@');
-      let lastDotPos = data().email.lastIndexOf('.');
-
-      if (!(lastAtPos < lastDotPos && lastAtPos > 0 && data().email.indexOf('@@') == -1 && lastDotPos > 2 && (data().email.length - lastDotPos) > 2)) {
-        formIsValid = false;
-        Println('Login', 'Email is not valid!', 'error');
-      }
-    }
-
-    // Validasi buat Password
-    if (!data().password) {
-      formIsValid = false;
-      Println('Login', 'Password cannot be empty!', 'error');
-    } else if (typeof data().password !== 'undefined') {
-      if (data().password.length < 6) {
-        formIsValid = false;
-        Println('Login', 'Password must be at least 6 characters!', 'error');
-      }
-    }
-
-    if (formIsValid) {
-      handleSubmit();
-    } else {
-      setLoading(false);
-    }
+    handleSubmit();
   };
 
-  // submit Button
   const handleSubmit = async () => {
     GuestService.post({
       url: 'login',
-      data: data(),
+      data: group.value,
       success: (res: any) => {
         const value = res.data;
 
-        if (value.status === 'error') {
-          Println('Login', value.message, 'error');
-          return;
-        } else if (value.status === 'failed') {
-          Println('Login', value.message, 'warn');
-          return;
-        }
-
+        Println('Login', value.message, 'success');
         handleLogin(value.data);
       },
       error: (err: any) => {
         Println('Login', err.message, 'error');
       },
       finally: () => {
+        group.markSubmitted(false);
         setLoading(false);
       }
     });
@@ -120,40 +102,33 @@ const Login: Component = () => {
             <div class='md:w-8/12 lg:w-5/12 lg:ml-20'>
               <h1 class='text-5xl font-bold text-blue-500 mb-5'>Login</h1>
               <div class='mb-6'>
-                <label for='floatingEmail'>Email address</label>
-                <input 
-                  required
-                  type='email'
-                  id='floatingEmail'
+                <TextInput
                   name='email'
-                  placeholder='name@example.com'
-                  value={data().email}
+                  type='email'
+                  label='Email'
                   disabled={loading()}
-                  onChange={handleChange} 
+                  placeholder='name@example.com'
+                  control={group.controls.email}
                   class='form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
                 />
               </div>
               <div class='mb-6'>
-                <label for='floatingPassword'>Password</label>
-                <input 
-                  required
-                  type='password'
-                  id='floatingPassword'
+                <TextInput
                   name='password'
-                  placeholder='Password'
-                  value={data().password}
+                  type='password'
+                  label='Password'
                   disabled={loading()}
-                  onChange={handleChange} 
+                  placeholder='your very secret password'
+                  control={group.controls.password}
                   class='form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
                 />
               </div>
-              <button
-                type='submit' onClick={handleValidation} disabled={loading()}
+              <Button 
+                title='Sign In'
+                disabled={loading()}
+                onClick={handleValidation}
                 class='inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full'
-                data-mdb-ripple='true'
-                data-mdb-ripple-color='light'>
-                Sign in
-              </button>
+              />
               <div class='flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5'>
                 <p class='text-center font-semibold mx-4 mb-0'>OR</p>
               </div>
