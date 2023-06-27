@@ -36,7 +36,11 @@ const AuthLayout: Component<AuthLayoutProps> = (props: any) => {
 
   return (
     <>
-      {loading() ? <Loader title={'Please Wait'} /> : (
+      {loading() ? (
+        <div class='h-screen'>
+          <Loader title={'Please Wait'} />
+        </div>
+      ) : (
         <div class="flex h-screen bg-gray-200 font-sans">
           <Sidebar open={open()} setOpen={updateOpen}   />
           <div class="flex-1 flex flex-col overflow-hidden">

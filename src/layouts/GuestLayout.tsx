@@ -31,7 +31,13 @@ const GuestLayout: Component<GuestLayoutProps> = (props: any) => {
 
   return (
     <>
-      {loading() ? <Loader title={'Please Wait'} /> : (
+      {loading() ? (
+        <div class='h-screen'>
+          <div class='flex justify-center items-center h-full'>
+            <Loader title={'Please Wait'} />
+          </div>
+        </div>
+      ) : (
         <div class="container-fluid position-relative d-flex p-0">
           {props.children}
         </div>
