@@ -1,34 +1,80 @@
-## Usage
 
-Those templates dependencies are maintained via [pnpm](https://pnpm.io) via `pnpm up -Lri`.
+# Scholarmate
+Scholarmate user interface using solidjs framework with tailwind and typescript
 
-This is the reason you see a `pnpm-lock.yaml`. That being said, any package manager will work. This file can be safely be removed once you clone a template.
+## Screenshots  
 
-```bash
-$ npm install # or pnpm install or yarn install
-```
+![App Screenshot](https://cdn.discordapp.com/attachments/881508824576565259/1121786577354489937/WhatsApp_Image_2023-06-23_at_19.58.46.jpg)
 
-### Learn more on the [Solid Website](https://solidjs.com) and come chat with us on our [Discord](https://discord.com/invite/solidjs)
+## Tech Stack  
 
-## Available Scripts
+**Client:** SolidJS, Axios, Sweetalert, Toaster
 
-In the project directory, you can run:
+## Features  
 
-### `npm dev` or `npm start`
+- Authentication Page
+- User Dashboard
+- Admin Dashboard
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Lessons Learned  
 
-The page will reload if you make edits.<br>
+When i make this service, i feel like this project has good performance than the other like laravel and express.
+After some update i learn something that i think i don't get it before, like i get better when search problem error,
+implement new system and server security.
 
-### `npm run build`
+## Run Locally  
 
-Builds the app for production to the `dist` folder.<br>
-It correctly bundles Solid in production mode and optimizes the build for the best performance.
+Clone the project  
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+~~~bash  
+  git clone https://github.com/Sleepy4k/solidjs-scholarmate
+~~~
 
-## Deployment
+Go to the project directory  
 
-You can deploy the `dist` folder to any static host provider (netlify, surge, now, etc.)
+~~~bash  
+  cd solidjs-scholarmate
+~~~
+
+Install dependencies
+
+~~~bash  
+  npm install
+~~~
+
+Copy .env file
+
+~~~bash  
+  copy .env.example .env
+~~~
+
+Start the server
+
+~~~bash  
+  npm start
+~~~
+
+## Environment Variables  
+
+To run this project, you will need to add the following environment variables to your .env file  
+
+`VITE_DEV`  
+
+`VITE_APP_NAME` 
+
+`VITE_API_URL` 
+
+## Acknowledgements  
+
+- [Solidjs](https://www.solidjs.com/docs/latest/api)
+- [Axios](https://axios-http.com/docs/intro)
+- [Sweetalert](https://sweetalert.js.org/guides/)
+- [Toaster](https://github.com/ardeora/solid-toast#readme)
+
+## Feedback  
+
+If you have any feedback, please reach out to us at sarahpalastrin@gmail.com
+
+## License  
+
+[MIT](https://github.com/Sleepy4k/rust-scholarmate-api/blob/main/LICENSE)
