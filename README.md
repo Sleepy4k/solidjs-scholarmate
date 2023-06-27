@@ -8,7 +8,7 @@ Scholarmate user interface using solidjs framework with tailwind and typescript
 
 ## Tech Stack  
 
-**Client:** SolidJS, Axios, Sweetalert, Toaster
+**Client:** SolidJS, Axios, Sweetalert, Toaster, Form Validator
 
 ## Features  
 
@@ -70,6 +70,7 @@ To run this project, you will need to add the following environment variables to
 - [Axios](https://axios-http.com/docs/intro)
 - [Sweetalert](https://sweetalert.js.org/guides/)
 - [Toaster](https://github.com/ardeora/solid-toast#readme)
+- [Form Validator](https://github.com/jorroll/solid-forms#readme)
 
 ## Feedback  
 

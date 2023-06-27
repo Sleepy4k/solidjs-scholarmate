@@ -1,17 +1,32 @@
 {
-  "name": "vite-template-solid",
+  "name": "scholarmate",
   "version": "1.0.0",
-  "description": "",
+  "description": "Scholarmate user interface using solidjs framework with tailwind and typescript",
+  "private": true,
   "scripts": {
     "start": "vite",
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
-    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "author": "Sleepy4k",
+  "keywords": [
+    "solidjs",
+    "vite",
+    "typescript",
+    "tailwindcss"
+  ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sleepy4k/solidjs-scholarmate.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Sleepy4k/solidjs-scholarmate.git"
+  },
+  "homepage": "https://github.com/Sleepy4k/solidjs-scholarmate.git",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.60.0",
     "@typescript-eslint/parser": "^5.60.0",
@@ -34,14 +49,21 @@
     "@suid/material": "^0.12.3",
     "ag-grid-community": "28.2.0",
     "ag-grid-solid": "28.2.0",
-    "apexcharts": "^3.35.4",
     "axios": "^1.4.0",
     "path": "^0.12.7",
+    "solid-forms": "^0.4.8",
     "solid-icons": "^1.0.8",
     "solid-js": "^1.7.6",
     "solid-toast": "^0.5.0",
     "sweetalert": "^2.1.2",
     "swiper": "^8.3.0",
     "url": "^0.11.1"
+  },
+  "resolutions": {
+    "solid-js": "^1.7.6"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   }
 }
