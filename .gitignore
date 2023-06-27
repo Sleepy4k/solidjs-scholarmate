@@ -1,5 +1,5 @@
-node_modules
-dist
 .env
-.vscode
 package-lock.json
+/.vscode
+/dist
+/node_modules
