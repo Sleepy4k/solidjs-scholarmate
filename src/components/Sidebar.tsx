@@ -1,10 +1,10 @@
 import { Icons } from './Icons';
-import { getStorage } from '@utils';
+import { Auth } from '@contexts';
 import { SidebarMenu } from '@consts';
 import { Dynamic } from 'solid-js/web';
 import { createStore } from 'solid-js/store';
 import { A, useLocation } from '@solidjs/router';
-import { Component, For, Show, createEffect } from 'solid-js';
+import { For, Show, Component, createEffect, useContext } from 'solid-js';
 
 const APP_NAME = import.meta.env.VITE_APP_NAME as string;
 
@@ -16,7 +16,8 @@ interface ISidebarProps {
 
 const Sidebar: Component<ISidebarProps> = (props) => {
   const location = useLocation();
-  const user = getStorage('user');
+  const context = useContext(Auth.Context);
+  const user = context.user();
   const [menus, setMenus] = createStore({
     Menus: []
   });
@@ -38,8 +39,12 @@ const Sidebar: Component<ISidebarProps> = (props) => {
         <nav class='mt-2 pl-2 pr-2'>
           <For each={menus.Menus}>{(menu) =>
             <>
-              {menu.role === 'any' || menu.role === user.role ? (
-                <Show when={menu.Type == 'MENU'} fallback={<div class='flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5' />}>
+              {menu.role === 'any' || menu.role === user?.role ? (
+                <Show when={menu.Type == 'MENU'} fallback={(
+                  <div class='flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5' >
+                    {menu.title ? <p class='text-center font-semibold mx-4 mb-0'>{menu.title}</p> : null}
+                  </div>
+                )}>
                   <A href={menu.link}>
                     <div class={`text-neutral-700 font-semibold text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-blue-100 rounded-md mt-2 ${location.pathname == menu.link && 'bg-blue-300'}`}>
                       <Dynamic component={Icons[menu.Icon]} />
@@ -47,7 +52,7 @@ const Sidebar: Component<ISidebarProps> = (props) => {
                     </div>
                   </A>
                 </Show>
-              ) : null};
+              ) : null}
             </>
           }</For>
         </nav>

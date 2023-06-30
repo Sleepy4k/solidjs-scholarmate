@@ -1,10 +1,13 @@
 import swal from 'sweetalert';
 import { Icons } from './Icons';
-import { Api } from '@services';
+import { Auth } from '@contexts';
+import { Println } from '@utils';
 import { Dynamic } from 'solid-js/web';
+import { AuthService } from '@services';
 import { useNavigate, A } from '@solidjs/router';
-import { Component, createSignal, Show } from 'solid-js';
-import { Println, deleteStorage, getStorage } from '@utils';
+import { Show, Component, createSignal, useContext, lazy } from 'solid-js';
+
+const Loader = lazy(() => import('./Loader'));
 
 interface INavbarProps {
   // eslint-disable-next-line no-unused-vars
@@ -14,7 +17,8 @@ interface INavbarProps {
 const Navbar: Component<INavbarProps> = (props) => {
   const burgerIcon: any = 'Menu';
   const navigate = useNavigate();
-  const user = getStorage('user');
+  const context = useContext(Auth.Context);
+  const user = context.user();
   const [openMatMenu, setOpenMatMenu] = createSignal(false);
 
   const onLogout = () => {
@@ -26,28 +30,26 @@ const Navbar: Component<INavbarProps> = (props) => {
       dangerMode: true,
     }).then((willLogout) => {
       if (willLogout) {
-        Api.post('/logout')
-          .then((res) => {
+        AuthService.post({
+          url: 'logout',
+          token: context.token(),
+          success: (res: any) => {
             const value = res.data;
-    
-            if (value.status === 'success') {
-              deleteStorage('user');
-              deleteStorage('student');
-              navigate('/login');
-              Println('Dashboard', value.message, 'success');
-            } else if (value.status === 'failed') {
-              Println('Dashboard', value.message, 'error');
-            } else {
-              Println('Dashboard', 'Something went wrong!', 'error');
-            }
-          })
-          .catch((err) => {
+
+            context.updateData('user', null);
+            context.updateData('token', null);
+            context.updateData('student', null);
+            navigate('/login');
+            Println('Dashboard', value.message, 'success');
+          },
+          error: (err: any) => {
             if (err.response) {
-              Println('Students', err.response.data.message, 'error');
+              Println('Dashboard', err.response.data.message, 'error');
             } else {
-              Println('Students', err.message, 'error');
+              Println('Dashboard', err.message, 'error');
             }
-          });
+          }
+        });
       }
     });
   };
@@ -60,13 +62,13 @@ const Navbar: Component<INavbarProps> = (props) => {
         </button>
       </div>
       <div class='flex items-center'>
-        <h1 class='m-5'>{user.email}</h1>
+        <h1 class='m-5'>{user?.email ? user.email : <Loader size='8' />}</h1>
         <div class='relative'>
           <button class='relative z-10 block w-16 h-16 overflow-hidden rounded-full shadow focus:outline-none border-4 border-blue-400' onClick={() => setOpenMatMenu(!openMatMenu())}>
             <img
               class='object-cover w-full h-full'
               src='./src/assets/profile.jpg'
-              alt='Your avatar'
+              alt='Avatar'
             />
           </button>
           <Show when={openMatMenu() == true}>

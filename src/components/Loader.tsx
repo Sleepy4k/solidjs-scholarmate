@@ -1,4 +1,4 @@
-import { Component, mergeProps, createSignal, createEffect } from 'solid-js';
+import { Component, mergeProps } from 'solid-js';
 
 interface ILoaderProps {
   size?: string;
@@ -6,19 +6,20 @@ interface ILoaderProps {
 }
 
 const Loader: Component<ILoaderProps> = (_props) => {
-  const [classes, setClasses] = createSignal<string>('h-16 w-16');
   const props = mergeProps({ title: '' }, _props);
-
-  createEffect(() => {
-    if (props.size) {
-      setClasses(`h-${props.size} w-${props.size}`);
-    }
-  });
 
   return (
     <div class='flex justify-center items-center h-full'>
-      <img class={classes()} src='https://icons8.com/preloaders/preloaders/1488/Iphone-spinner-2.gif' alt={props.title} />
-      <div>{props.title}</div>
+      <div
+        class={`inline-block ${props.size ? `h-${props.size} w-${props.size}` : 'h-16 w-16'} animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]`}
+        role="status"
+      >
+        <span
+          class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+        >
+          {props.title}
+        </span>
+      </div>
     </div>
   );
 };

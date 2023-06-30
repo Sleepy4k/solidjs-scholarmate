@@ -12,7 +12,7 @@ interface ITextInputProps {
 }
 
 const TextInput: Component<ITextInputProps> = (_props) => {
-  const [inputId, setInputId] = createSignal<string>('floating-example-123');
+  const [inputId, setInputId] = createSignal<string>('textinput-component-123');
   const props = mergeProps({
     class: '',
     disabled: false,
@@ -22,7 +22,7 @@ const TextInput: Component<ITextInputProps> = (_props) => {
 
   createEffect(() => {
     const RandomNumber = Math.floor(Math.random() * 1000);
-    setInputId(`floating-${props.name}-${RandomNumber}`);
+    setInputId(`textinput-component-${RandomNumber}`);
   });
 
   return (
@@ -55,7 +55,7 @@ const TextInput: Component<ITextInputProps> = (_props) => {
           {(errorMsg, index) => (
             <>
               {index() > 0 && <br />}
-              <small class='text-red-500'>{errorMsg}</small>
+              <small class='text-red-500'>{`${props.label} ${errorMsg}`}</small>
             </>
           )}
         </For>

@@ -1,5 +1,5 @@
 import { Loader } from '@components';
-import { Component, mergeProps } from 'solid-js';
+import { Component, mergeProps, createEffect, createSignal } from 'solid-js';
 
 interface IButtonProps {
   title?: string;
@@ -9,6 +9,7 @@ interface IButtonProps {
 }
 
 const Button: Component<IButtonProps> = (_props) => {
+  const [id, setId] = createSignal<string>('button-component-123');
   const props = mergeProps({
     title: '',
     class: '',
@@ -22,8 +23,14 @@ const Button: Component<IButtonProps> = (_props) => {
     }
   };
 
+  createEffect(() => {
+    const RandomNumber = Math.floor(Math.random() * 1000);
+    setId(`button-component-${RandomNumber}`);
+  });
+
   return (
     <button
+      id={id()}
       type='submit'
       class={props.class}
       data-mdb-ripple='true'
