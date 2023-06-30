@@ -1,5 +1,6 @@
 import './index.css';
 import App from './App';
+import { Auth } from '@contexts';
 import { render } from 'solid-js/web';
 import { Toaster } from 'solid-toast';
 import { Router } from '@solidjs/router';
@@ -18,7 +19,9 @@ document.title = title ? title + ' Mate' : 'Solid App';
 
 render(() => (
   <Router>
-    <App />
+    <Auth.Provider>
+      <App />
+    </Auth.Provider>
     <Toaster />
   </Router>
 ), root!);
