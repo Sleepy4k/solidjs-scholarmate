@@ -13,12 +13,21 @@ interface IGuestProps {
 
 const initService = async (props: IGuestProps, method: string) => {
   const requestOption = {
-    headers: props.headers,
+    headers: {
+      'Content-Type': 'application/json',
+      ...props.headers
+    },
     params: props.params
   };
 
   try {
-    const response = await Api[method](props.url, requestOption);
+    let response: any;
+
+    if (method === 'get' || method === 'delete') {
+      response = await Api[method](props.url, requestOption);
+    } else {
+      response = await Api[method](props.url, props.data, requestOption);
+    }
 
     if (props.success) {
       props.success(response);

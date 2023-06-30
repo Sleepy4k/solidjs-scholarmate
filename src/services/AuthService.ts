@@ -1,9 +1,9 @@
 /* eslint-disable solid/reactivity */
 import Api from './ApiService';
-import { getCookie } from '@utils';
 
 interface IAuthProps {
   url: string;
+  token: string;
   data?: any;
   success?: any;
   error?: any;
@@ -12,19 +12,24 @@ interface IAuthProps {
   finally?: any;
 }
 
-const token = getCookie('scholarmate_auth_token');
-
 const initService = async (props: IAuthProps, method: string) => {
   const requestOption = {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+      Authorization: `Bearer ${props.token}`,
       ...props.headers
     },
     params: props.params
   };
 
   try {
-    const response = await Api[method](props.url, requestOption);
+    let response: any;
+
+    if (method === 'get' || method === 'delete') {
+      response = await Api[method](props.url, requestOption);
+    } else {
+      response = await Api[method](props.url, props.data, requestOption);
+    }
 
     if (props.success) {
       props.success(response);
