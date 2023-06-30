@@ -2,44 +2,54 @@ import { GuestLayout } from '@layouts';
 import { GuestService } from '@services';
 import { TextInput, Button } from '@components';
 import { useNavigate, A } from '@solidjs/router';
+import { Println, Validator, convertToTitleCase } from '@utils';
 import { createFormGroup, createFormControl } from 'solid-forms';
 import { Component, createSignal, createEffect } from 'solid-js';
-import { Println, deleteStorage, setStorage, Validator } from '@utils';
 
-const Login: Component = () => {
+const Register: Component = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = createSignal<boolean>(false);
   const group = createFormGroup({
     email: createFormControl('', {
       required: true,
-      validators: [Validator.required, Validator.email],
+      validators: [Validator.required, Validator.email, Validator.maxLength],
     }),
+    role: createFormControl('user'),
     password: createFormControl('', {
       required: true,
-      validators: [Validator.required],
+      validators: [Validator.required, Validator.minLength, Validator.maxLength],
+    }),
+    password_confirmation: createFormControl('', {
+      required: true,
+      validators: [Validator.required, Validator.minLength, Validator.maxLength],
     }),
   });
 
   createEffect(() => {
     if (group.isDisabled || group.isValid) return;
   });
-  
+
   const handleValidation = () => {
     if (group.isSubmitted) {
-      Println('Login', 'Form already submitted', 'warn');
+      Println('Register', 'Form already submitted', 'error');
       return;
     }
 
     if (!group.isValid) {
-      const errors = Object.values(group.errors);
+      Object.entries(group.controls).forEach(([fieldName, error]) => {
+        if (error.errors) {
+          const errors = Object.values(error.errors);
 
-      for (let index = 0; index < errors.length; index++) {
-        Println('Login', `${errors[index]}`, 'error');
-      }
+          for (let index = 0; index < errors.length; index++) {
+            Println('Register', `${convertToTitleCase(fieldName)} ${errors[index]}`, 'error');
+          }
+        }
+      });
 
       return;
     }
 
+    group.markTouched(true);
     group.markSubmitted(true);
 
     setLoading(true);
@@ -47,44 +57,36 @@ const Login: Component = () => {
   };
 
   const handleSubmit = async () => {
-    GuestService.post({
-      url: 'login',
+    if (group.value.password !== group.value.password_confirmation) {
+      setLoading(false);
+      group.markTouched(false);
+      group.markSubmitted(false);
+      Println('Register', 'Password confirmation not match', 'error');
+      return;
+    }
+
+    await GuestService.post({
+      url: 'register',
       data: group.value,
       success: (res: any) => {
         const value = res.data;
 
-        Println('Login', value.message, 'success');
-        handleLogin(value.data);
+        Println('Register', value.message, 'success');
+        navigate('/login');
       },
       error: (err: any) => {
-        Println('Login', err.message, 'error');
+        if (err.response) {
+          Println('Register', err.response.data.message, 'error');
+        } else {
+          Println('Register', err.message, 'error');
+        }
       },
       finally: () => {
+        group.markTouched(false);
         group.markSubmitted(false);
         setLoading(false);
       }
     });
-  };
-
-  const handleLogin = (data: any) => {
-    deleteStorage('user');
-    deleteStorage('student');
-
-    setStorage('user', {
-      id: data.id,
-      email: data.email,
-      role: data.role,
-    });
-
-    if (data.student !== null) {
-      setStorage('student', data.student);
-    }
-
-    if (data.student === null && data.role === 'user') {
-      navigate('/student');
-    } else {
-      navigate('/');
-    }
   };
 
   return (
@@ -100,7 +102,7 @@ const Login: Component = () => {
               />
             </div>
             <div class='md:w-8/12 lg:w-5/12 lg:ml-20'>
-              <h1 class='text-5xl font-bold text-blue-500 mb-5'>Login</h1>
+              <h1 class='text-5xl font-bold text-blue-500 mb-5'>Register</h1>
               <div class='mb-6'>
                 <TextInput
                   name='email'
@@ -123,8 +125,19 @@ const Login: Component = () => {
                   class='form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
                 />
               </div>
+              <div class='mb-6'>
+                <TextInput
+                  name='password_confirmation'
+                  type='password'
+                  label='Password Confirmation'
+                  disabled={loading()}
+                  placeholder='same as password'
+                  control={group.controls.password_confirmation}
+                  class='form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
+                />
+              </div>
               <Button 
-                title='Sign In'
+                title='Sign Up'
                 disabled={loading()}
                 onClick={handleValidation}
                 class='inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full'
@@ -134,11 +147,11 @@ const Login: Component = () => {
               </div>
               <A
                 class='px-7 py-3 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full flex justify-center items-center mb-3 bg-[#3b5998]'
-                href='/register'
+                href='/login'
                 data-mdb-ripple='true'
                 data-mdb-ripple-color='light'
               >
-                Sign Up
+                Sign In
               </A>
             </div>
           </div>
@@ -148,4 +161,4 @@ const Login: Component = () => {
   );
 };
 
-export default Login;
+export default Register;
