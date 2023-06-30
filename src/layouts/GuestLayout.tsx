@@ -1,7 +1,7 @@
+import { Auth } from '@contexts';
 import { Loader } from '@components';
-import { checkCookie } from '@utils';
 import { useNavigate } from '@solidjs/router';
-import { Component, createEffect, createSignal } from 'solid-js';
+import { Component, createEffect, createSignal, useContext } from 'solid-js';
 
 interface GuestLayoutProps {
   children: any;
@@ -10,11 +10,13 @@ interface GuestLayoutProps {
 
 const GuestLayout: Component<GuestLayoutProps> = (props: any) => {
   const navigate = useNavigate();
-  const [loading, setLoading] = createSignal(true);
+  const context = useContext(Auth.Context);
+  const contentLoading = context.loading();
+  const [pageLoading, setPageLoading] = createSignal(true);
 
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
-    const isUserLoggedIn = checkCookie('scholarmate_auth_token');
+    const isUserLoggedIn = context.token();
 
     if (isUserLoggedIn) {
       navigate('/');
@@ -23,15 +25,15 @@ const GuestLayout: Component<GuestLayoutProps> = (props: any) => {
         await props.onFinish();
       }
     }
-    
+
     setTimeout(() => {
-      setLoading(false);
-    }, 1500);
+      setPageLoading(false);
+    }, 150);
   });
 
   return (
     <>
-      {loading() ? (
+      {contentLoading || pageLoading() ? (
         <div class='h-screen'>
           <div class='flex justify-center items-center h-full'>
             <Loader title={'Please Wait'} />
