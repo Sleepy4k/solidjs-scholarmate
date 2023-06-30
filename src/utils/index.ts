@@ -1,5 +1,6 @@
 import Println from './Debug';
 import Validator from './Validator';
+import convertToTitleCase from './Parse';
 import { getCookie, checkCookie } from './Cookie';
 import { getStorage, setStorage, deleteStorage } from './LocalStorage';
 
@@ -10,5 +11,6 @@ export {
   getStorage,
   setStorage,
   checkCookie,
-  deleteStorage
+  deleteStorage,
+  convertToTitleCase,
 };
