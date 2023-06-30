@@ -1,5 +1,16 @@
-import Println from "./Debug";
-import { getCookie, checkCookie } from "./Cookie";
-import { getStorage, setStorage, deleteStorage } from "./LocalStorage";
+import Println from './Debug';
+import Validator from './Validator';
+import convertToTitleCase from './Parse';
+import { getCookie, checkCookie } from './Cookie';
+import { getStorage, setStorage, deleteStorage } from './LocalStorage';
 
-export { Println, getCookie, checkCookie, getStorage, setStorage, deleteStorage };
+export {
+  Println,
+  getCookie,
+  Validator,
+  getStorage,
+  setStorage,
+  checkCookie,
+  deleteStorage,
+  convertToTitleCase,
+};

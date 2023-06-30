@@ -1,32 +1,51 @@
-import { Loader } from "../components";
-import { checkCookie } from "../utils";
-import { useNavigate } from "@solidjs/router";
-import { Component, createEffect, createSignal } from "solid-js";
+import { Auth } from '@contexts';
+import { Loader } from '@components';
+import { useNavigate } from '@solidjs/router';
+import { Component, createEffect, createSignal, useContext } from 'solid-js';
 
-const GuestLayout: Component<{ children: any, onFinish: () => void }> = (props: any) => {
+interface GuestLayoutProps {
+  children: any;
+  onFinish?: () => void;
+}
+
+const GuestLayout: Component<GuestLayoutProps> = (props: any) => {
   const navigate = useNavigate();
-  const [loading, setLoading] = createSignal(true);
+  const context = useContext(Auth.Context);
+  const contentLoading = context.loading();
+  const [pageLoading, setPageLoading] = createSignal(true);
 
+  // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
-    const isUserLoggedIn = checkCookie("scholarmate_auth_token");
+    const isUserLoggedIn = context.token();
 
     if (isUserLoggedIn) {
-      navigate("/");
+      navigate('/');
     } else {
-      setLoading(false);
-      await props.onFinish()
+      if (props.onFinish) {
+        await props.onFinish();
+      }
     }
+
+    setTimeout(() => {
+      setPageLoading(false);
+    }, 150);
   });
 
   return (
     <>
-      {loading() ? <Loader title={"Loading"} /> : (
+      {contentLoading || pageLoading() ? (
+        <div class='h-screen'>
+          <div class='flex justify-center items-center h-full'>
+            <Loader title={'Please Wait'} />
+          </div>
+        </div>
+      ) : (
         <div class="container-fluid position-relative d-flex p-0">
           {props.children}
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
 export default GuestLayout;
