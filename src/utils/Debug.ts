@@ -7,19 +7,21 @@ const Println = (title: string, message: string, type: string) => {
     switch (type) {
     case 'error':
       console.error(`[${title}] ${message}`);
+      toast.error(`[${title}] ${message}`);
       break;
     case 'warn':
       console.warn(`[${title}] ${message}`);
+      toast.error(`[${title}] ${message}`);
       break;
-    case 'info':
+    case 'success':
       console.info(`[${title}] ${message}`);
+      toast.success(`[${title}] ${message}`);
       break;
     default:
       console.log(`[${title}] ${message}`);
+      toast(`[${title}] ${message}`);
       break;
     }
-    
-    toast(`[${title}] ${message}`);
   } else {
     switch (type) {
     case 'error':
@@ -28,11 +30,11 @@ const Println = (title: string, message: string, type: string) => {
     case 'warn':
       toast.error(`[${title}] ${message}`);
       break;
-    case 'info':
-      toast(`[${title}] ${message}`);
+    case 'success':
+      toast.success(`[${title}] ${message}`);
       break;
     default:
-      toast.success(`[${title}] ${message}`);
+      toast(`[${title}] ${message}`);
       break;
     }
   }
