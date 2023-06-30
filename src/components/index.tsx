@@ -1,3 +1,4 @@
+import Box from './Box';
 import Cards from './Cards';
 import Button from './Button';
 import Navbar from './Navbar';
@@ -9,6 +10,7 @@ import PieChart from './PieChart';
 import TextInput from './TextInput';
 
 export {
+  Box,
   Cards,
   Icons,
   Button,
