@@ -19,10 +19,12 @@ const App: Component = () => {
       <Route path="/login" component={Login} />
       <Route path="/student" component={Student} />
       <Route path="/register" component={Register} />
+      <Route path="/student/add" component={Student} />
       <Route path="/university" component={University} />
       <Route path="/scholarship" component={Scholarship} />
-      <Route path="/university/:id" component={UniversityEdit} />
-      <Route path="/scholarship/:id" component={ScholarshipEdit} />
+      <Route path="/student/:id/edit" component={Student} />
+      <Route path="/university/:id/edit" component={UniversityEdit} />
+      <Route path="/scholarship/:id/edit" component={ScholarshipEdit} />
     </Routes>
   );
 };
