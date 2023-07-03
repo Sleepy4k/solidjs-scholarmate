@@ -1,14 +1,14 @@
 import { Loader } from '@components';
 import { Component, mergeProps, createEffect, createSignal } from 'solid-js';
 
-interface IButtonProps {
+interface ICustomButtonProps {
   title?: string;
   class?: string;
   disabled?: boolean;
   onClick?: () => void;
 }
 
-const Button: Component<IButtonProps> = (_props) => {
+const CustomButton: Component<ICustomButtonProps> = (_props) => {
   const [id, setId] = createSignal<string>('button-component-123');
   const props = mergeProps({
     title: '',
@@ -43,4 +43,4 @@ const Button: Component<IButtonProps> = (_props) => {
   );
 };
 
-export default Button;
+export default CustomButton;

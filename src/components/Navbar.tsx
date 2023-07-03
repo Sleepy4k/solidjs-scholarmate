@@ -1,13 +1,12 @@
 import swal from 'sweetalert';
+import Loader from './Loader';
 import { Icons } from './Icons';
 import { Auth } from '@contexts';
 import { Println } from '@utils';
 import { Dynamic } from 'solid-js/web';
 import { AuthService } from '@services';
 import { useNavigate, A } from '@solidjs/router';
-import { Show, Component, createSignal, useContext, lazy } from 'solid-js';
-
-const Loader = lazy(() => import('./Loader'));
+import { Show, Component, createSignal, useContext } from 'solid-js';
 
 interface INavbarProps {
   // eslint-disable-next-line no-unused-vars

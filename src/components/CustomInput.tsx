@@ -1,22 +1,24 @@
 import { createFormControl, IFormControl } from 'solid-forms';
 import { Show, mergeProps, Component, For, createEffect, createSignal } from 'solid-js';
 
-interface ITextInputProps {
+interface ICustomInputProps {
   name: string;
   type: string;
   label: string;
   class?: string;
   disabled?: boolean;
   placeholder?: string;
+  defaultValue?: string;
   control?: IFormControl<string>;
 }
 
-const TextInput: Component<ITextInputProps> = (_props) => {
+const CustomInput: Component<ICustomInputProps> = (_props) => {
   const [inputId, setInputId] = createSignal<string>('textinput-component-123');
   const props = mergeProps({
     class: '',
     disabled: false,
     placeholder: '',
+    defaultValue: '',
     control: createFormControl('')
   }, _props);
 
@@ -64,4 +66,4 @@ const TextInput: Component<ITextInputProps> = (_props) => {
   );
 };
 
-export default TextInput;
+export default CustomInput;
