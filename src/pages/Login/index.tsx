@@ -1,16 +1,16 @@
 import { Auth } from '@contexts';
 import { GuestLayout } from '@layouts';
 import { GuestService } from '@services';
-import { TextInput, Button } from '@components';
 import { useNavigate, A } from '@solidjs/router';
-import { Component, createEffect, useContext } from 'solid-js';
+import { CustomInput, CustomButton } from '@components';
 import { Println, Validator, convertToTitleCase } from '@utils';
 import { createFormGroup, createFormControl } from 'solid-forms';
+import { Component, createEffect, useContext, createSignal } from 'solid-js';
 
 const Login: Component = () => {
   const navigate = useNavigate();
-  const context = useContext(Auth.Context);
-  const loading = context.loading();
+  const context = useContext<Auth.IAuthContext>(Auth.Context);
+  const [loading, setLoading] = createSignal<boolean>(false);
   const group = createFormGroup({
     email: createFormControl('', {
       required: true,
@@ -23,6 +23,8 @@ const Login: Component = () => {
   });
 
   createEffect(() => {
+    setLoading(context.loading());
+
     if (group.isDisabled || group.isValid) return;
   });
   
@@ -112,30 +114,30 @@ const Login: Component = () => {
             <div class='md:w-8/12 lg:w-5/12 lg:ml-20'>
               <h1 class='text-5xl font-bold text-blue-500 mb-5'>Login</h1>
               <div class='mb-6'>
-                <TextInput
+                <CustomInput
                   name='email'
                   type='email'
                   label='Email'
-                  disabled={loading}
+                  disabled={loading()}
                   placeholder='name@example.com'
                   control={group.controls.email}
                   class='form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
                 />
               </div>
               <div class='mb-6'>
-                <TextInput
+                <CustomInput
                   name='password'
                   type='password'
                   label='Password'
-                  disabled={loading}
+                  disabled={loading()}
                   placeholder='your very secret password'
                   control={group.controls.password}
                   class='form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
                 />
               </div>
-              <Button 
+              <CustomButton 
                 title='Sign In'
-                disabled={loading}
+                disabled={loading()}
                 onClick={handleValidation}
                 class='inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full'
               />

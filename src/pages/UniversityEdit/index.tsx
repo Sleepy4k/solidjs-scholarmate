@@ -1,8 +1,8 @@
 import { Auth } from '@contexts';
 import { AuthLayout } from '@layouts';
 import { AuthService } from '@services';
-import { TextInput, Button } from '@components';
 import { Component, useContext } from 'solid-js';
+import { CustomInput, CustomButton } from '@components';
 import { useNavigate, useParams, A } from '@solidjs/router';
 import { Println, Validator, convertToTitleCase } from '@utils';
 import { createFormGroup, createFormControl } from 'solid-forms';
@@ -128,7 +128,7 @@ const UniversityEdit: Component = () => {
           <div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-500">
             <div class="md:w-8/12 lg:w-5/12 lg:ml-20">
               <div class="mb-3">
-                <TextInput
+                <CustomInput
                   name='name'
                   type='text'
                   label='Name'
@@ -139,7 +139,7 @@ const UniversityEdit: Component = () => {
                 />
               </div>
               <div class="mb-3">
-                <TextInput
+                <CustomInput
                   name='alias'
                   type='text'
                   label='Alias'
@@ -150,7 +150,7 @@ const UniversityEdit: Component = () => {
                 />
               </div>
               <div class="mb-3">
-                <TextInput
+                <CustomInput
                   name='major'
                   type='text'
                   label='Major'
@@ -161,7 +161,7 @@ const UniversityEdit: Component = () => {
                 />
               </div>
               <div class="mb-3">
-                <TextInput
+                <CustomInput
                   name='quantity'
                   type='number'
                   label='Quantity'
@@ -172,7 +172,7 @@ const UniversityEdit: Component = () => {
                 />
               </div>
               <div class="mb-3">
-                <TextInput
+                <CustomInput
                   name='description'
                   type='text'
                   label='Description'
@@ -183,7 +183,7 @@ const UniversityEdit: Component = () => {
                 />
               </div>
               <div class="mb-3">
-                <TextInput
+                <CustomInput
                   name='link'
                   type='text'
                   label='Web Url'
@@ -194,7 +194,7 @@ const UniversityEdit: Component = () => {
                 />
               </div>
               <div class="mb-3">
-                <TextInput
+                <CustomInput
                   name='image'
                   type='text'
                   label='Image Url'
@@ -204,7 +204,7 @@ const UniversityEdit: Component = () => {
                   class='form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
                 />
               </div>
-              <Button 
+              <CustomButton 
                 title='Edit'
                 disabled={loading}
                 onClick={handleValidation}

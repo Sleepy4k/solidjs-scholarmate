@@ -1,13 +1,15 @@
+import { Auth } from '@contexts';
 import { GuestLayout } from '@layouts';
 import { GuestService } from '@services';
-import { TextInput, Button } from '@components';
+import { CustomInput, CustomButton } from '@components';
 import { useNavigate, A } from '@solidjs/router';
 import { Println, Validator, convertToTitleCase } from '@utils';
 import { createFormGroup, createFormControl } from 'solid-forms';
-import { Component, createSignal, createEffect } from 'solid-js';
+import { Component, createSignal, useContext, createEffect } from 'solid-js';
 
 const Register: Component = () => {
   const navigate = useNavigate();
+  const context = useContext<Auth.IAuthContext>(Auth.Context);
   const [loading, setLoading] = createSignal<boolean>(false);
   const group = createFormGroup({
     email: createFormControl('', {
@@ -26,6 +28,8 @@ const Register: Component = () => {
   });
 
   createEffect(() => {
+    setLoading(context.loading());
+
     if (group.isDisabled || group.isValid) return;
   });
 
@@ -51,8 +55,8 @@ const Register: Component = () => {
 
     group.markTouched(true);
     group.markSubmitted(true);
+    context.updateData('loading', true);
 
-    setLoading(true);
     handleSubmit();
   };
 
@@ -84,7 +88,7 @@ const Register: Component = () => {
       finally: () => {
         group.markTouched(false);
         group.markSubmitted(false);
-        setLoading(false);
+        context.updateData('loading', false);
       }
     });
   };
@@ -104,7 +108,7 @@ const Register: Component = () => {
             <div class='md:w-8/12 lg:w-5/12 lg:ml-20'>
               <h1 class='text-5xl font-bold text-blue-500 mb-5'>Register</h1>
               <div class='mb-6'>
-                <TextInput
+                <CustomInput
                   name='email'
                   type='email'
                   label='Email'
@@ -115,7 +119,7 @@ const Register: Component = () => {
                 />
               </div>
               <div class='mb-6'>
-                <TextInput
+                <CustomInput
                   name='password'
                   type='password'
                   label='Password'
@@ -126,7 +130,7 @@ const Register: Component = () => {
                 />
               </div>
               <div class='mb-6'>
-                <TextInput
+                <CustomInput
                   name='password_confirmation'
                   type='password'
                   label='Password Confirmation'
@@ -136,7 +140,7 @@ const Register: Component = () => {
                   class='form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
                 />
               </div>
-              <Button 
+              <CustomButton 
                 title='Sign Up'
                 disabled={loading()}
                 onClick={handleValidation}

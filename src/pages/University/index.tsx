@@ -82,7 +82,7 @@ const University: Component = () => {
         { field: 'quantity' },
         { field: 'action', cellRenderer: (params: any) => (
           <div class='space-x-3'>
-            <Button variant='contained' color='success' onClick={() => navigate(`/university/${params.data.id}`)}>
+            <Button variant='contained' color='success' onClick={() => navigate(`/university/${params.data.id}/edit`)}>
               Edit
             </Button>
             <Button variant='contained' color='error' onClick={() => handleDelete(params.data.id)}>
