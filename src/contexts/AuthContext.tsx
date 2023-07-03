@@ -1,6 +1,6 @@
 import { createContext, createSignal } from 'solid-js';
 
-interface IAuthContext {
+export interface IAuthContext {
   user: any;
   token: any;
   student: any;
@@ -19,7 +19,6 @@ export function Provider(props: any) {
 
   const updateData = (type: string, data: any) => {
     type = type.toLowerCase();
-    setLoading(true);
 
     if (type === 'user') {
       setUser(data);
@@ -32,8 +31,6 @@ export function Provider(props: any) {
     } else {
       console.error('Invalid type');
     }
-
-    setLoading(false);
   };
 
   return (
