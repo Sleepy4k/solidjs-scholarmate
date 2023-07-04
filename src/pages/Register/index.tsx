@@ -71,19 +71,13 @@ const Register: Component = () => {
 
     await GuestService.post({
       url: 'register',
+      name: 'Register',
       data: group.value,
       success: (res: any) => {
         const value = res.data;
 
         Println('Register', value.message, 'success');
         navigate('/login');
-      },
-      error: (err: any) => {
-        if (err.response) {
-          Println('Register', err.response.data.message, 'error');
-        } else {
-          Println('Register', err.message, 'error');
-        }
       },
       finally: () => {
         group.markTouched(false);

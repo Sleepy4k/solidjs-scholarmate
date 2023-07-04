@@ -1,9 +1,12 @@
+import swal from 'sweetalert';
 import { Component } from 'solid-js';
 import { Button } from '@suid/material';
+import { AuthService } from '@services';
 import { useNavigate } from '@solidjs/router';
 import { GridData, CustomButton } from '@components';
 
 interface IAdminProps {
+  token: string;
   students: any;
   loading: boolean;
 }
@@ -26,9 +29,31 @@ const Admin: Component<IAdminProps> = (props) => {
         <Button variant='contained' color='success' onClick={() => navigate(`/student/${params.data.id}/edit`)}>
           Edit
         </Button>
+        <Button variant='contained' color='error' onClick={() => handleDelete(params.data.id)}>
+          Delete
+        </Button>
       </div>
     )},
   ];
+
+  const handleDelete = (id: any) => {
+    swal({
+      title: 'Are you sure?',
+      text: 'Once deleted, you will not be able to recover this data!',
+      icon: 'warning',
+      buttons: ['Cancel', 'Delete'],
+      dangerMode: true,
+    // eslint-disable-next-line solid/reactivity
+    }).then((willDelete) => {
+      if (willDelete) {
+        AuthService.delete({
+          url: `student/${id}`,
+          name: 'Student',
+          token: props.token
+        });
+      }
+    });
+  };
 
   return (
     <div class='w-full mt-12'>

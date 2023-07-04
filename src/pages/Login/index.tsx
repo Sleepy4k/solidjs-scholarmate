@@ -58,6 +58,7 @@ const Login: Component = () => {
   const handleSubmit = async () => {
     await GuestService.post({
       url: 'login',
+      name: 'Login',
       data: group.value,
       success: (res: any) => {
         const value = res.data;
@@ -65,13 +66,6 @@ const Login: Component = () => {
         Println('Login', value.message, 'success');
         context.updateData('token', value.token);
         handleLogin(value.data[0]);
-      },
-      error: (err: any) => {
-        if (err.response) {
-          Println('Login', err.response.data.message, 'error');
-        } else {
-          Println('Login', err.message, 'error');
-        }
       },
       finally: () => {
         group.markTouched(false);

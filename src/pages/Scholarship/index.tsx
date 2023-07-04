@@ -6,17 +6,24 @@ import { GridData } from '@components';
 import { AuthService } from '@services';
 import { Button } from '@suid/material';
 import { useNavigate } from '@solidjs/router';
-import { Component, createSignal, useContext } from 'solid-js';
+import { IUserData, IStudentData } from '@types';
+import { Component, createSignal, useContext, createEffect } from 'solid-js';
 
 const Scholarship: Component = () => {
   let field = [];
   const navigate = useNavigate();
-  const context = useContext(Auth.Context);
-  const user = context.user();
-  const student = context.student();
-  const loading = context.loading();
+  const context = useContext<Auth.IAuthContext>(Auth.Context);
+  const [user, setUser] = createSignal<IUserData>(null);
   const [application, setApplication] = createSignal([]);
   const [scholarships, setScholarships] = createSignal([]);
+  const [loading, setLoading] = createSignal<boolean>(false);
+  const [student, setStudent] = createSignal<IStudentData>(null);
+
+  createEffect(() => {
+    setUser(context.user());
+    setStudent(context.student());
+    setLoading(context.loading());
+  });
 
   const handleDelete = (id: any) => {
     swal({
@@ -29,47 +36,25 @@ const Scholarship: Component = () => {
       if (willDelete) {
         AuthService.delete({
           url: `scholarship/${id}`,
-          token: context.token(),
-          success: (res: any) => {
-            const value = res.data;
-
-            Println('Scholarship', value.message, 'success');
-          },
-          error: (err: any) => {
-            if (err.response) {
-              Println('Scholarship', err.response.data.message, 'error');
-            } else {
-              Println('Scholarship', err.message, 'error');
-            }
-          }
+          name: 'Scholarship',
+          token: context.token()
         });
       }
     });
   };
 
   const handleApply = async (data: any) => {
-    if (student) {
+    if (student()) {
       await AuthService.post({
         url: 'application',
+        name: 'Scholarship',
         token: context.token(),
         data: {
           status: 'pending',
           univ_id: data.univ_id,
           major: data.univ_major,
-          student_id: student.id,
+          student_id: student().id,
           scholarship_id: data.id,
-        },
-        success: (res: any) => {
-          const value = res.data;
-
-          Println('Scholarship', value.message, 'success');
-        },
-        error: (err: any) => {
-          if (err.response) {
-            Println('', err.response.data.message, 'error');
-          } else {
-            Println('Scholarship', err.message, 'error');
-          }
         }
       });
     } else {
@@ -80,43 +65,31 @@ const Scholarship: Component = () => {
   const onFinish = async () => {
     context.updateData('loading', true);
 
-    if (user.role != 'admin' && student) {
+    if (user().role != 'admin' && student()) {
       await AuthService.get({
-        url: `application/${student.id}`,
+        url: `application/${student().id}`,
+        name: 'Scholarship',
         token: context.token(),
         success: (res: any) => {
           const value = res.data;
 
           setApplication(value.data);
-        },
-        error: (err: any) => {
-          if (err.response) {
-            Println('Scholarship', err.response.data.message, 'error');
-          } else {
-            Println('Scholarship', err.message, 'error');
-          }
         }
       });
     }
 
     await AuthService.get({
       url: 'scholarship',
+      name: 'Scholarship',
       token: context.token(),
       success: (res: any) => {
         const value = res.data;
 
         setScholarships(value.data);
-      },
-      error: (err: any) => {
-        if (err.response) {
-          Println('Scholarship', err.response.data.message, 'error');
-        } else {
-          Println('Scholarship', err.message, 'error');
-        }
       }
     });
 
-    if (user.role != 'admin') {
+    if (user().role != 'admin') {
       field = [
         { field: 'name' },
         { field: 'univ_name', headerName: 'University' },
@@ -170,7 +143,7 @@ const Scholarship: Component = () => {
   return (
     <AuthLayout onFinish={onFinish}>
       <div class='w-full mt-12'>
-        {loading ? null : <GridData data={scholarships()} field={field} />}
+        {loading() ? null : <GridData data={scholarships()} field={field} />}
       </div>
     </AuthLayout>
   );
