@@ -1,19 +1,26 @@
 import { Auth } from '@contexts';
+import { Println } from '@utils';
 import { useNavigate } from '@solidjs/router';
 import { Sidebar, Navbar, Loader } from '@components';
-import { Component, createEffect, createSignal, useContext } from 'solid-js';
+import { Component, createEffect, createSignal, useContext, mergeProps } from 'solid-js';
 
 interface AuthLayoutProps {
   children: any;
+  canAccess?: string;
   onFinish?: () => void;
 }
 
-const AuthLayout: Component<AuthLayoutProps> = (props: any) => {
+const AuthLayout: Component<AuthLayoutProps> = (_props: any) => {
   const navigate = useNavigate();
-  const context = useContext(Auth.Context);
+  const context = useContext<Auth.IAuthContext>(Auth.Context);
   const contentLoading = context.loading();
-  const [open, setOpen] = createSignal(false);
-  const [pageLoading, setPageLoading] = createSignal(true);
+  const [open, setOpen] = createSignal<boolean>(false);
+  const [pageLoading, setPageLoading] = createSignal<boolean>(true);
+
+  const props = mergeProps({
+    canAccess: 'any',
+    onFinish: () => {}
+  }, _props);
 
   const updateOpen = (value: boolean) => {
     setOpen(value);
@@ -21,13 +28,23 @@ const AuthLayout: Component<AuthLayoutProps> = (props: any) => {
 
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
+    const userRole = context.user();
     const isUserLoggedIn = context.token();
 
     if (!isUserLoggedIn) {
       navigate('/login');
     } else {
-      if (props.onFinish) {
-        await props.onFinish();
+      if (userRole === null) {
+        navigate('/login');
+      } else {
+        if (props.canAccess === 'any' || (props.canAccess === 'user' && userRole !== 'admin') || (props.canAccess === 'admin' && userRole !== 'user')) {
+          if (props.onFinish) {
+            await props.onFinish();
+          }
+        } else {
+          Println('Dashboard', 'You are not allowed to access this page', 'error');
+          navigate('/');
+        } 
       }
     }
     
