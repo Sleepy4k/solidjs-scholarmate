@@ -66,6 +66,7 @@ module.exports = {
         'map': [
           ['@', './src'],
           ['@utils', './src/utils'],
+          ['@types', './src/types'],
           ['@consts', './src/consts'],
           ['@layouts', './src/layouts'],
           ['@contexts', './src/contexts'],
