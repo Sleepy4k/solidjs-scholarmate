@@ -1,4 +1,5 @@
 import { createContext, createSignal } from 'solid-js';
+import { IUserData, IStudentData } from '@types';
 
 export interface IAuthContext {
   user: any;
@@ -12,12 +13,12 @@ export interface IAuthContext {
 export const Context = createContext<IAuthContext>();
 
 export function Provider(props: any) {
-  const [user, setUser] = createSignal<object>(null);
-  const [token, setToken] = createSignal<string>(null);
-  const [student, setStudent] = createSignal<object>(null);
+  const [token, setToken] = createSignal<string>('');
+  const [user, setUser] = createSignal<IUserData>(null);
   const [loading, setLoading] = createSignal<boolean>(false);
+  const [student, setStudent] = createSignal<IStudentData>(null);
 
-  const updateData = (type: string, data: any) => {
+  const updateData = async (type: string, data: any) => {
     type = type.toLowerCase();
 
     if (type === 'user') {
