@@ -3,10 +3,12 @@ import Loader from './Loader';
 import { Icons } from './Icons';
 import { Auth } from '@contexts';
 import { Println } from '@utils';
+import { IUserData } from '@types';
 import { Dynamic } from 'solid-js/web';
 import { AuthService } from '@services';
+import ProfilePic from '../assets/profile.jpg';
 import { useNavigate, A } from '@solidjs/router';
-import { Show, Component, createSignal, useContext } from 'solid-js';
+import { Show, Component, createSignal, useContext, createEffect } from 'solid-js';
 
 interface INavbarProps {
   // eslint-disable-next-line no-unused-vars
@@ -16,9 +18,13 @@ interface INavbarProps {
 const Navbar: Component<INavbarProps> = (props) => {
   const burgerIcon: any = 'Menu';
   const navigate = useNavigate();
-  const context = useContext(Auth.Context);
-  const user = context.user();
-  const [openMatMenu, setOpenMatMenu] = createSignal(false);
+  const context = useContext<Auth.IAuthContext>(Auth.Context);
+  const [user, setUser] = createSignal<IUserData>(null);
+  const [openMatMenu, setOpenMatMenu] = createSignal<boolean>(false);
+
+  createEffect(() => {
+    setUser(context.user());
+  });
 
   const onLogout = () => {
     swal({
@@ -31,27 +37,27 @@ const Navbar: Component<INavbarProps> = (props) => {
       if (willLogout) {
         AuthService.post({
           url: 'logout',
+          name: 'Dashboard',
           token: context.token(),
           success: (res: any) => {
             const value = res.data;
 
-            context.updateData('user', null);
-            context.updateData('token', null);
-            context.updateData('student', null);
-            navigate('/login');
+            handleLogout(value);
             Println('Dashboard', value.message, 'success');
-          },
-          error: (err: any) => {
-            if (err.response) {
-              Println('Dashboard', err.response.data.message, 'error');
-            } else {
-              Println('Dashboard', err.message, 'error');
-            }
+        
+            navigate('/login');
           }
         });
       }
     });
   };
+
+  const handleLogout = async (value: any) => {
+    context.updateData('user', null);
+    context.updateData('token', value.token);
+    context.updateData('student', null);
+  };
+
 
   return (
     <header class='flex items-center justify-between px-6 py-2 bg-white border-b border-dark-purple drop-shadow-md h-20'>
@@ -61,12 +67,12 @@ const Navbar: Component<INavbarProps> = (props) => {
         </button>
       </div>
       <div class='flex items-center'>
-        <h1 class='m-5'>{user?.email ? user.email : <Loader size='8' />}</h1>
+        <h1 class='m-5'>{user()?.email ? user().email : <Loader size='8' />}</h1>
         <div class='relative'>
           <button class='relative z-10 block w-16 h-16 overflow-hidden rounded-full shadow focus:outline-none border-4 border-blue-400' onClick={() => setOpenMatMenu(!openMatMenu())}>
             <img
               class='object-cover w-full h-full'
-              src='./src/assets/profile.jpg'
+              src={ProfilePic}
               alt='Avatar'
             />
           </button>

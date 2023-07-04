@@ -5,6 +5,8 @@ interface ICustomInputProps {
   name: string;
   type: string;
   label: string;
+  min?: number;
+  max?: number;
   class?: string;
   disabled?: boolean;
   placeholder?: string;
@@ -19,6 +21,8 @@ const CustomInput: Component<ICustomInputProps> = (_props) => {
     disabled: false,
     placeholder: '',
     defaultValue: '',
+    min: 0,
+    max: 255,
     control: createFormControl('')
   }, _props);
 
@@ -26,6 +30,15 @@ const CustomInput: Component<ICustomInputProps> = (_props) => {
     const RandomNumber = Math.floor(Math.random() * 1000);
     setInputId(`textinput-component-${RandomNumber}`);
   });
+
+  const handleMinMax = () => {
+    if (props.type === 'number') {
+      return {
+        min: props.min,
+        max: props.max,
+      };
+    }
+  };
 
   return (
     <div
@@ -50,6 +63,7 @@ const CustomInput: Component<ICustomInputProps> = (_props) => {
         onInput={(e) => {
           props.control.setValue(e.currentTarget.value);
         }}
+        {...handleMinMax}
       />
 
       <Show when={props.control.isTouched && !!props.control.errors}>
