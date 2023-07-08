@@ -38,6 +38,7 @@ const Navbar: Component<INavbarProps> = (props) => {
         AuthService.post({
           url: 'logout',
           name: 'Dashboard',
+          server: 'auth',
           token: context.token(),
           success: (res: any) => {
             const value = res.data;
