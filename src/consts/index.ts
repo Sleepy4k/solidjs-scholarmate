@@ -1,9 +1,11 @@
 import SidebarMenu from './SidebarMenu';
-import { APP_ENV, APP_NAME, API_URL } from './AppConfig';
+import { APP_ENV, APP_NAME, MAIN_API_URL, EXPORT_API_URL, AUTH_API_URL } from './AppConfig';
 
 export {
   APP_ENV,
   APP_NAME,
-  API_URL,
-  SidebarMenu
+  SidebarMenu,
+  MAIN_API_URL,
+  AUTH_API_URL,
+  EXPORT_API_URL
 };
