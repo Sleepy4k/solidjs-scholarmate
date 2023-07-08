@@ -1,16 +1,20 @@
 import axios from 'axios';
+import { MAIN_API_URL, EXPORT_API_URL, AUTH_API_URL } from '@consts';
 
-const API_URL = import.meta.env.VITE_API_URL as string;
-
-const api = axios.create({
-  baseURL: API_URL || 'http://localhost:3000',
+const mainApi = axios.create({
+  baseURL: MAIN_API_URL || 'http://localhost:8000',
 });
 
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+const exportApi = axios.create({
+  baseURL: EXPORT_API_URL || 'http://localhost:8001',
+});
 
-export default api;
+const authApi = axios.create({
+  baseURL: AUTH_API_URL || 'http://localhost:8002',
+});
+
+export {
+  mainApi,
+  exportApi,
+  authApi,
+};

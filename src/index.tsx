@@ -1,6 +1,7 @@
 import './index.css';
 import App from './App';
 import { Auth } from '@contexts';
+import { APP_NAME } from '@consts';
 import { render } from 'solid-js/web';
 import { Toaster } from 'solid-toast';
 import { Router } from '@solidjs/router';
@@ -13,9 +14,7 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
   );
 }
 
-const title = import.meta.env.VITE_APP_NAME;
-
-document.title = title ? title + ' Mate' : 'Solid App';
+document.title = APP_NAME + ' Mate';
 
 render(() => (
   <Router>

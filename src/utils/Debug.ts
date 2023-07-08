@@ -1,7 +1,8 @@
 import toast from 'solid-toast';
+import { APP_ENV } from '@consts';
 
 const Println = (title: string, message: string, type: string) => {
-  const isDev = import.meta.env.VITE_DEV === 'local';
+  const isDev = APP_ENV === 'development';
 
   if (isDev) {
     switch (type) {

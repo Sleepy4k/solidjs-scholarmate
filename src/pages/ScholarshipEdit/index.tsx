@@ -1,17 +1,17 @@
 import { Auth } from '@contexts';
 import { AuthLayout } from '@layouts';
 import { AuthService } from '@services';
-import { TextInput, Button } from '@components';
-import { Component, useContext } from 'solid-js';
+import { CustomInput, CustomButton } from '@components';
 import { useNavigate, useParams, A } from '@solidjs/router';
 import { Println, Validator, convertToTitleCase } from '@utils';
 import { createFormGroup, createFormControl } from 'solid-forms';
+import { Component, useContext, createSignal, createEffect } from 'solid-js';
 
 const ScholarshipEdit: Component = () => {
   const params = useParams();
   const navigate = useNavigate();
-  const context = useContext(Auth.Context);
-  const loading = context.loading();
+  const context = useContext<Auth.IAuthContext>(Auth.Context);
+  const [loading, setLoading] = createSignal<boolean>(false);
   const group = createFormGroup({
     name: createFormControl('', {
       required: true,
@@ -33,6 +33,12 @@ const ScholarshipEdit: Component = () => {
       required: true,
       validators: [Validator.required, Validator.maxLength],
     }),
+  });
+
+  createEffect(() => {
+    setLoading(context.loading());
+
+    if (group.isDisabled || group.isValid) return;
   });
 
   const handleValidation = () => {
@@ -65,20 +71,14 @@ const ScholarshipEdit: Component = () => {
   const handleSubmit = async () => {
     await AuthService.put({
       url: `scholarship/${params.id}`,
-      token: context.token(),
+      name: 'Scholarship',
       data: group.value,
+      token: context.token(),
       success: (res: any) => {
         const value = res.data;
 
         Println('Scholarship', value.message, 'success');
         navigate('/scholarship');
-      },
-      error: (err: any) => {
-        if (err.response) {
-          Println('Scholarship', err.response.data.message, 'error');
-        } else {
-          Println('Scholarship', err.message, 'error');
-        }
       }
     });
   };
@@ -88,6 +88,7 @@ const ScholarshipEdit: Component = () => {
 
     await AuthService.get({
       url: `scholarship/${params.id}`,
+      name: 'Scholarship',
       token: context.token(),
       success: (res: any) => {
         const value = res.data;
@@ -98,13 +99,6 @@ const ScholarshipEdit: Component = () => {
         group.controls.requirement.setValue(value.data.requirement);
         group.controls.univ_id.setValue(value.data.univ_id);
       },
-      error: (err: any) => {
-        if (err.response) {
-          Println('Scholarship', err.response.data.message, 'error');
-        } else {
-          Println('Scholarship', err.message, 'error');
-        }
-      },
       finally: () => {
         context.updateData('loading', false);
       }
@@ -112,58 +106,58 @@ const ScholarshipEdit: Component = () => {
   };
 
   return (
-    <AuthLayout onFinish={onFinish}>
+    <AuthLayout onFinish={onFinish} canAccess='admin'>
       <section>
         <div class="py-12 h-full">
           <div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-500">
             <div class="md:w-8/12 lg:w-5/12 lg:ml-20">
               <div class="mb-3">
-                <TextInput
+                <CustomInput
                   name='name'
                   type='text'
                   label='Name'
-                  disabled={loading}
+                  disabled={loading()}
                   placeholder='Name'
                   control={group.controls.name}
                   class='form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
                 />
               </div>
               <div class="mb-3">
-                <TextInput
+                <CustomInput
                   name='quantity'
                   type='number'
                   label='Quantity'
-                  disabled={loading}
+                  disabled={loading()}
                   placeholder='Quantity'
                   control={group.controls.quantity}
                   class='form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
                 />
               </div>
               <div class="mb-3">
-                <TextInput
+                <CustomInput
                   name='description'
                   type='text'
                   label='Description'
-                  disabled={loading}
+                  disabled={loading()}
                   placeholder='Description'
                   control={group.controls.description}
                   class='form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
                 />
               </div>
               <div class="mb-3">
-                <TextInput
+                <CustomInput
                   name='requirement'
                   type='text'
                   label='Requirement'
-                  disabled={loading}
+                  disabled={loading()}
                   placeholder='Requirement'
                   control={group.controls.requirement}
                   class='form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
                 />
               </div>
-              <Button 
+              <CustomButton 
                 title='Edit'
-                disabled={loading}
+                disabled={loading()}
                 onClick={handleValidation}
                 class='inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full'
               />

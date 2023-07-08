@@ -1,22 +1,28 @@
 import { createFormControl, IFormControl } from 'solid-forms';
 import { Show, mergeProps, Component, For, createEffect, createSignal } from 'solid-js';
 
-interface ITextInputProps {
+interface ICustomInputProps {
   name: string;
   type: string;
   label: string;
+  min?: number;
+  max?: number;
   class?: string;
   disabled?: boolean;
   placeholder?: string;
+  defaultValue?: string;
   control?: IFormControl<string>;
 }
 
-const TextInput: Component<ITextInputProps> = (_props) => {
+const CustomInput: Component<ICustomInputProps> = (_props) => {
   const [inputId, setInputId] = createSignal<string>('textinput-component-123');
   const props = mergeProps({
     class: '',
     disabled: false,
     placeholder: '',
+    defaultValue: '',
+    min: 0,
+    max: 255,
     control: createFormControl('')
   }, _props);
 
@@ -24,6 +30,15 @@ const TextInput: Component<ITextInputProps> = (_props) => {
     const RandomNumber = Math.floor(Math.random() * 1000);
     setInputId(`textinput-component-${RandomNumber}`);
   });
+
+  const handleMinMax = () => {
+    if (props.type === 'number') {
+      return {
+        min: props.min,
+        max: props.max,
+      };
+    }
+  };
 
   return (
     <div
@@ -48,6 +63,7 @@ const TextInput: Component<ITextInputProps> = (_props) => {
         onInput={(e) => {
           props.control.setValue(e.currentTarget.value);
         }}
+        {...handleMinMax}
       />
 
       <Show when={props.control.isTouched && !!props.control.errors}>
@@ -64,4 +80,4 @@ const TextInput: Component<ITextInputProps> = (_props) => {
   );
 };
 
-export default TextInput;
+export default CustomInput;

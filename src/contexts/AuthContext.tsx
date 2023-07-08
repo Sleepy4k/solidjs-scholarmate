@@ -1,6 +1,7 @@
 import { createContext, createSignal } from 'solid-js';
+import { IUserData, IStudentData } from '@types';
 
-interface IAuthContext {
+export interface IAuthContext {
   user: any;
   token: any;
   student: any;
@@ -12,14 +13,13 @@ interface IAuthContext {
 export const Context = createContext<IAuthContext>();
 
 export function Provider(props: any) {
-  const [user, setUser] = createSignal<object>(null);
-  const [token, setToken] = createSignal<string>(null);
-  const [student, setStudent] = createSignal<object>(null);
+  const [token, setToken] = createSignal<string>('');
+  const [user, setUser] = createSignal<IUserData>(null);
   const [loading, setLoading] = createSignal<boolean>(false);
+  const [student, setStudent] = createSignal<IStudentData>(null);
 
-  const updateData = (type: string, data: any) => {
+  const updateData = async (type: string, data: any) => {
     type = type.toLowerCase();
-    setLoading(true);
 
     if (type === 'user') {
       setUser(data);
@@ -32,8 +32,6 @@ export function Provider(props: any) {
     } else {
       console.error('Invalid type');
     }
-
-    setLoading(false);
   };
 
   return (

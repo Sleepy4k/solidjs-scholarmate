@@ -1,22 +1,22 @@
 import { Auth } from '@contexts';
-import { Println } from '@utils';
 import { Box } from '@components';
 import { AuthLayout } from '@layouts';
 import { AuthService } from '@services';
-import { Component, createSignal, useContext, lazy } from 'solid-js';
+import { IUserData, IStudentData } from '@types';
+import { Component, createSignal, useContext, lazy, createEffect } from 'solid-js';
 
 const User = lazy(() => import('./User'));
 const Admin = lazy(() => import('./Admin'));
 
 const Dashboard: Component = () => {
-  const context = useContext(Auth.Context);
-  const user = context.user();
-  const student = context.student();
-  const loading = context.loading();
+  const context = useContext<Auth.IAuthContext>(Auth.Context);
   const [forum, setForum] = createSignal([]);
+  const [user, setUser] = createSignal<IUserData>(null);
   const [universities, setUniversities] = createSignal([]);
   const [scholarships, setScholarships] = createSignal([]);
+  const [loading, setLoading] = createSignal<boolean>(false);
   const [myapplications, setMyApplications] = createSignal([]);
+  const [student, setStudent] = createSignal<IStudentData>(null);
   const [applications, setApplications] = createSignal({
     total: 0,
     pending: 0,
@@ -24,12 +24,18 @@ const Dashboard: Component = () => {
     declined: 0,
   });
 
+  createEffect(() => {
+    setUser(context.user());
+    setStudent(context.student());
+    setLoading(context.loading());
+  });
+
   const onFinish = async () => {
     context.updateData('loading', true);
 
-    if (student && user && user.role === 'user') {
+    if (student() && user() && user().role === 'user') {
       await AuthService.get({
-        url: `application/${student.id}`,
+        url: `application/${student().id}`,
         token: context.token(),
         success: (res: any) => {
           const value = res.data;
@@ -45,38 +51,26 @@ const Dashboard: Component = () => {
             accepted,
             declined,
           });
-        },
-        error: (err: any) => {
-          if (err.response) {
-            Println('Dashboard', err.response.data.message, 'error');
-          } else {
-            Println('Dashboard', err.message, 'error');
-          }
         }
       });
 
       await AuthService.get({
-        url: `forum/${student.id}`,
+        url: `forum/${student().id}`,
+        name: 'Dashboard',
         token: context.token(),
         success: (res: any) => {
           const value = res.data;
 
           setForum(value.data);
         },
-        error: (err: any) => {
-          if (err.response) {
-            Println('Dashboard', err.response.data.message, 'error');
-          } else {
-            Println('Dashboard', err.message, 'error');
-          }
-        },
         finally: () => {
           context.updateData('loading', false);
         }
       });
-    } else if (user && user.role === 'admin') {
+    } else if (user() && user().role === 'admin') {
       await AuthService.get({
         url: 'application',
+        name: 'Dashboard',
         token: context.token(),
         success: (res: any) => {
           const value = res.data;
@@ -91,47 +85,28 @@ const Dashboard: Component = () => {
             accepted,
             declined,
           });
-        },
-        error: (err: any) => {
-          if (err.response) {
-            Println('Dashboard', err.response.data.message, 'error');
-          } else {
-            Println('Dashboard', err.message, 'error');
-          }
         }
       });
 
       await AuthService.get({
         url: 'scholarship',
+        name: 'Dashboard',
         token: context.token(),
         success: (res: any) => {
           const value = res.data;
 
           setScholarships(value.data);
-        },
-        error: (err: any) => {
-          if (err.response) {
-            Println('Dashboard', err.response.data.message, 'error');
-          } else {
-            Println('Dashboard', err.message, 'error');
-          }
         }
       });
 
       await AuthService.get({
         url: 'university',
+        name: 'Dashboard',
         token: context.token(),
         success: (res: any) => {
           const value = res.data;
 
           setUniversities(value.data);
-        },
-        error: (err: any) => {
-          if (err.response) {
-            Println('Dashboard', err.response.data.message, 'error');
-          } else {
-            Println('Dashboard', err.message, 'error');
-          }
         },
         finally: () => {
           context.updateData('loading', false);
@@ -149,7 +124,7 @@ const Dashboard: Component = () => {
           <Box title='Application Declined' value={applications().declined.toString()} />
           <Box title='Application Pending' value={applications().pending.toString()} />
         </div>
-        {user.role === 'user' ? <User forum={forum()} myapplications={myapplications()} /> : <Admin loading={loading} scholarships={scholarships()} universities={universities()} />}
+        {user().role === 'user' ? <User forum={forum()} myapplications={myapplications()} /> : <Admin loading={loading()} scholarships={scholarships()} universities={universities()} />}
       </div>        
     </AuthLayout>
   );

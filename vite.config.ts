@@ -12,6 +12,7 @@ export default defineConfig({
     alias: {
       '@': resolve(__dirname, './src'),
       '@utils': resolve(__dirname, './src/utils'),
+      '@types': resolve(__dirname, './src/types'),
       '@consts': resolve(__dirname, './src/consts'),
       '@layouts': resolve(__dirname, './src/layouts'),
       '@contexts': resolve(__dirname, './src/contexts'),

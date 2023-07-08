@@ -10,9 +10,9 @@ interface GuestLayoutProps {
 
 const GuestLayout: Component<GuestLayoutProps> = (props: any) => {
   const navigate = useNavigate();
-  const context = useContext(Auth.Context);
+  const context = useContext<Auth.IAuthContext>(Auth.Context);
   const contentLoading = context.loading();
-  const [pageLoading, setPageLoading] = createSignal(true);
+  const [pageLoading, setPageLoading] = createSignal<boolean>(true);
 
   // eslint-disable-next-line solid/reactivity
   createEffect(async () => {
