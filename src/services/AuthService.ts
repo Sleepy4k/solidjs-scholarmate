@@ -1,10 +1,11 @@
 /* eslint-disable solid/reactivity */
-import Api from './ApiService';
 import { mergeProps } from 'solid-js';
+import { mainApi, exportApi, authApi } from './ApiService';
 import { Println, convertErrorResponseData } from '@utils';
 
 interface IAuthProps {
   url: string;
+  server?: string;
   token: string;
   name?: string;
   data?: any;
@@ -17,18 +18,36 @@ interface IAuthProps {
 
 const initService = async (_props: IAuthProps, method: string) => {
   const props = mergeProps({
+    server: 'main',
     name: 'Server',
     headers: {}
   }, _props);
 
   const requestOption = {
     headers: {
-      Accept: 'application/json',
       Authorization: `Bearer ${props.token}`,
       ...props.headers
     },
-    params: props.params
+    params: props.params,
+    responseType: props.server === 'export' ? 'blob' : 'json'
   };
+
+  let Api: any;
+
+  switch (props.server) {
+  case 'main':
+    Api = mainApi;
+    break;
+  case 'export':
+    Api = exportApi;
+    break;
+  case 'auth':
+    Api = authApi;
+    break;
+  default:
+    Api = mainApi;
+    break;
+  }
 
   try {
     let response: any;
@@ -42,9 +61,20 @@ const initService = async (_props: IAuthProps, method: string) => {
     if (props.success) {
       props.success(response);
     } else {
-      const res = response.data;
+      if (props.server === 'export') {
+        const type = response.headers['content-type'];
+        const fileName = response.headers['content-disposition'].split('filename=')[1].split(';')[0];
+        const blob = new Blob([response.data], { type: type });
+        const link = document.createElement('a');
 
-      Println(props.name, res.message, 'success');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = fileName;
+        link.click();
+      } else {
+        const res = response.data;
+
+        Println(props.name, res.message, 'success');
+      }
     }
   } catch (error) {
     if (props.error) {

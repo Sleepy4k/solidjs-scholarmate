@@ -1,10 +1,11 @@
 /* eslint-disable solid/reactivity */
-import Api from './ApiService';
 import { mergeProps } from 'solid-js';
+import { mainApi, exportApi, authApi } from './ApiService';
 import { Println, convertErrorResponseData } from '@utils';
 
 interface IGuestProps {
   url: string;
+  server?: string;
   name?: string;
   data?: any;
   success?: any;
@@ -16,17 +17,34 @@ interface IGuestProps {
 
 const initService = async (_props: IGuestProps, method: string) => {
   const props = mergeProps({
+    server: 'main',
     name: 'Server',
     headers: {}
   }, _props);
 
   const requestOption = {
     headers: {
-      'Content-Type': 'application/json',
       ...props.headers
     },
     params: props.params
   };
+
+  let Api: any;
+
+  switch (props.server) {
+  case 'main':
+    Api = mainApi;
+    break;
+  case 'export':
+    Api = exportApi;
+    break;
+  case 'auth':
+    Api = authApi;
+    break;
+  default:
+    Api = mainApi;
+    break;
+  }
 
   try {
     let response: any;
@@ -40,9 +58,20 @@ const initService = async (_props: IGuestProps, method: string) => {
     if (props.success) {
       props.success(response);
     } else {
-      const res = response.data;
+      if (props.server === 'export') {
+        const type = response.headers['content-type'];
+        const fileName = response.headers['content-disposition'].split('filename=')[1].split(';')[0];
+        const blob = new Blob([response.data], { type: type });
+        const link = document.createElement('a');
+        
+        link.href = window.URL.createObjectURL(blob);
+        link.download = fileName;
+        link.click();
+      } else {
+        const res = response.data;
 
-      Println(props.name, res.message, 'success');
+        Println(props.name, res.message, 'success');
+      }
     }
   } catch (error) {
     if (props.error) {
