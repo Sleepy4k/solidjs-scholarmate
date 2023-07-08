@@ -16,7 +16,6 @@ const Register: Component = () => {
       required: true,
       validators: [Validator.required, Validator.email, Validator.maxLength],
     }),
-    role: createFormControl('user'),
     password: createFormControl('', {
       required: true,
       validators: [Validator.required, Validator.minLength, Validator.maxLength],
@@ -73,6 +72,7 @@ const Register: Component = () => {
       url: 'register',
       name: 'Register',
       data: group.value,
+      server: 'auth',
       success: (res: any) => {
         const value = res.data;
 

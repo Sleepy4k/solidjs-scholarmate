@@ -60,6 +60,7 @@ const Login: Component = () => {
       url: 'login',
       name: 'Login',
       data: group.value,
+      server: 'auth',
       success: (res: any) => {
         const value = res.data;
 
