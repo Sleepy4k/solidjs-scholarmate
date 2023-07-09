@@ -65,8 +65,7 @@ const Login: Component = () => {
         const value = res.data;
 
         Println('Login', value.message, 'success');
-        context.updateData('token', value.token);
-        handleLogin(value.data[0]);
+        handleLogin(value);
       },
       finally: () => {
         group.markTouched(false);
@@ -76,7 +75,17 @@ const Login: Component = () => {
     });
   };
 
-  const handleLogin = (data: any) => {
+  const handleLogin = (value: any) => {
+    const data = value.data[0];
+
+    if (data.student === null && data.role === 'user') {
+      navigate('/student');
+    } else {
+      navigate('/');
+    }
+
+    context.updateData('token', value.token);
+
     context.updateData('user', {
       id: data.id,
       email: data.email,
@@ -85,12 +94,6 @@ const Login: Component = () => {
 
     if (data.student !== null) {
       context.updateData('student', data.student);
-    }
-
-    if (data.student === null && data.role === 'user') {
-      navigate('/student');
-    } else {
-      navigate('/');
     }
   };
 

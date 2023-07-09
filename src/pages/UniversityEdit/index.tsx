@@ -3,9 +3,9 @@ import { AuthLayout } from '@layouts';
 import { AuthService } from '@services';
 import { CustomInput, CustomButton } from '@components';
 import { useNavigate, useParams, A } from '@solidjs/router';
-import { Println, Validator, convertToTitleCase } from '@utils';
 import { createFormGroup, createFormControl } from 'solid-forms';
 import { Component, useContext, createEffect, createSignal } from 'solid-js';
+import { Println, Validator, convertToTitleCase, convertStringToNumber } from '@utils';
 
 const UniversityEdit: Component = () => {
   const params = useParams();
@@ -27,7 +27,7 @@ const UniversityEdit: Component = () => {
     }),
     quantity: createFormControl('', {
       required: true,
-      validators: [Validator.required, Validator.maxLength],
+      validators: [Validator.required, Validator.isNumber, Validator.minLengthNumber],
     }),
     image: createFormControl('', {
       required: true,
@@ -80,13 +80,26 @@ const UniversityEdit: Component = () => {
     await AuthService.put({
       url: `university/${params.id}`,
       name: 'University',
-      data: group.value,
+      data: {
+        name: group.controls.name.value,
+        major: group.controls.major.value,
+        description: group.controls.description.value,
+        quantity: convertStringToNumber(group.controls.quantity.value),
+        image: group.controls.image.value,
+        link: group.controls.link.value,
+        alias: group.controls.alias.value,
+      },
       token: context.token(),
       success: (res: any) => {
         const value = res.data;
 
         Println('University', value.message, 'success');
         navigate('/university');
+      },
+      finally: () => {
+        group.markTouched(true);
+        group.markSubmitted(true);
+        context.updateData('loading', false);
       }
     });
   };
@@ -100,14 +113,15 @@ const UniversityEdit: Component = () => {
       token: context.token(),
       success: (res: any) => {
         const value = res.data;
+        const responseData = value.data[0];
 
-        group.controls.name.setValue(value.name);
-        group.controls.major.setValue(value.major);
-        group.controls.description.setValue(value.description);
-        group.controls.quantity.setValue(value.quantity);
-        group.controls.image.setValue(value.image);
-        group.controls.link.setValue(value.link);
-        group.controls.alias.setValue(value.alias);
+        group.controls.name.setValue(responseData.name);
+        group.controls.major.setValue(responseData.major);
+        group.controls.description.setValue(responseData.description);
+        group.controls.quantity.setValue(responseData.quantity);
+        group.controls.image.setValue(responseData.image);
+        group.controls.link.setValue(responseData.link);
+        group.controls.alias.setValue(responseData.alias);
       },
       finally: () => {
         context.updateData('loading', false);

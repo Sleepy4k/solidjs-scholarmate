@@ -9,6 +9,8 @@ interface IAdminProps {
   token: string;
   students: any;
   loading: boolean;
+  // eslint-disable-next-line no-unused-vars
+  handleRefresh: (loading: boolean) => void;
 }
 
 const Admin: Component<IAdminProps> = (props) => {
@@ -49,7 +51,8 @@ const Admin: Component<IAdminProps> = (props) => {
         AuthService.delete({
           url: `student/${id}`,
           name: 'Student',
-          token: props.token
+          token: props.token,
+          finally: () => props.handleRefresh(true)
         });
       }
     });
@@ -97,6 +100,12 @@ const Admin: Component<IAdminProps> = (props) => {
         title='Export Csv'
         disabled={props.loading}
         onClick={handleExpotCsv}
+        class='ms-2 inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-1/8 mb-2'
+      />
+      <CustomButton 
+        title='Refresh'
+        disabled={props.loading}
+        onClick={() => props.handleRefresh(true)}
         class='ms-2 inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-1/8 mb-2'
       />
       {props.loading ? null : <GridData data={props.students} field={field} />}

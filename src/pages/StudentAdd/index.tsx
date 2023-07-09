@@ -4,9 +4,9 @@ import { AuthLayout } from '@layouts';
 import { AuthService } from '@services';
 import { useNavigate, A } from '@solidjs/router';
 import { CustomInput, CustomButton } from '@components';
-import { Println, Validator, convertToTitleCase } from '@utils';
 import { createFormGroup, createFormControl } from 'solid-forms';
 import { Component, useContext, createSignal, createEffect } from 'solid-js';
+import { Println, Validator, convertToTitleCase, convertStringToNumber } from '@utils';
 
 const StudentAdd: Component = () => {
   const navigate = useNavigate();
@@ -95,7 +95,7 @@ const StudentAdd: Component = () => {
   };
 
   const handleSubmit = async () => {
-    if (user().role !== 'admin') {
+    if (user()?.role !== 'admin') {
       await AuthService.post({
         url: 'apply',
         name: 'Student',
@@ -107,8 +107,8 @@ const StudentAdd: Component = () => {
           date_of_birth: group.controls.date_of_birth.value,
           region: group.controls.region.value,
           register_number: group.controls.register_number.value,
-          toefl_score: parseInt(group.controls.toefl_score.value, 10),
-          ielts_score: parseInt(group.controls.ielts_score.value, 10),
+          toefl_score: convertStringToNumber(group.controls.toefl_score.value),
+          ielts_score: convertStringToNumber(group.controls.ielts_score.value),
         },
         token: context.token(),
         success: (res: any) => {
@@ -136,8 +136,8 @@ const StudentAdd: Component = () => {
           date_of_birth: group.controls.date_of_birth.value,
           region: group.controls.region.value,
           register_number: group.controls.register_number.value,
-          toefl_score: parseInt(group.controls.toefl_score.value, 10),
-          ielts_score: parseInt(group.controls.ielts_score.value, 10),
+          toefl_score: convertStringToNumber(group.controls.toefl_score.value),
+          ielts_score: convertStringToNumber(group.controls.ielts_score.value),
         },
         token: context.token(),
         success: (res: any) => {
@@ -201,7 +201,7 @@ const StudentAdd: Component = () => {
                   class='form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
                 />
               </div>
-              {user().role === 'admin' && (
+              {user()?.role === 'admin' && (
                 <div class="mb-3">
                   <CustomInput
                     name='email'
@@ -290,7 +290,7 @@ const StudentAdd: Component = () => {
                 onClick={handleValidation}
                 class='inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full'
               />
-              {user().role === 'admin' && (
+              {user()?.role === 'admin' && (
                 <>
                   <div class='flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5' />
                   <A

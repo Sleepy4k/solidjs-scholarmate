@@ -1,17 +1,25 @@
 import { Auth } from '@contexts';
 import { AuthLayout } from '@layouts';
 import { AuthService } from '@services';
+import '@thisbeyond/solid-select/style.css';
+import { Select } from '@thisbeyond/solid-select';
 import { CustomInput, CustomButton } from '@components';
 import { useNavigate, useParams, A } from '@solidjs/router';
-import { Println, Validator, convertToTitleCase } from '@utils';
 import { createFormGroup, createFormControl } from 'solid-forms';
 import { Component, useContext, createSignal, createEffect } from 'solid-js';
+import { Println, Validator, convertToTitleCase, convertStringToNumber } from '@utils';
+
+interface IUniversity {
+  label: string;
+  value: string;
+}
 
 const ScholarshipEdit: Component = () => {
   const params = useParams();
   const navigate = useNavigate();
   const context = useContext<Auth.IAuthContext>(Auth.Context);
   const [loading, setLoading] = createSignal<boolean>(false);
+  const [universities, setUniversities] = createSignal<IUniversity[]>([]);
   const group = createFormGroup({
     name: createFormControl('', {
       required: true,
@@ -29,11 +37,13 @@ const ScholarshipEdit: Component = () => {
       required: true,
       validators: [Validator.required, Validator.maxLength],
     }),
-    univ_id: createFormControl(0, {
+    univ_id: createFormControl('', {
       required: true,
       validators: [Validator.required, Validator.maxLength],
     }),
   });
+
+  const formatter = (item: any, type: string) => (type === 'option' ? item.label : item.label);
 
   createEffect(() => {
     setLoading(context.loading());
@@ -72,13 +82,24 @@ const ScholarshipEdit: Component = () => {
     await AuthService.put({
       url: `scholarship/${params.id}`,
       name: 'Scholarship',
-      data: group.value,
+      data: {
+        name: group.controls.name.value,
+        quantity: convertStringToNumber(group.controls.quantity.value),
+        description: group.controls.description.value,
+        requirement: group.controls.requirement.value,
+        univ_id: convertStringToNumber(group.controls.univ_id.value),
+      },
       token: context.token(),
       success: (res: any) => {
         const value = res.data;
 
         Println('Scholarship', value.message, 'success');
         navigate('/scholarship');
+      },
+      finally: () => {
+        group.markTouched(false);
+        group.markSubmitted(false);
+        context.updateData('loading', false);
       }
     });
   };
@@ -92,12 +113,27 @@ const ScholarshipEdit: Component = () => {
       token: context.token(),
       success: (res: any) => {
         const value = res.data;
+        const responseData = value.data[0];
 
-        group.controls.name.setValue(value.data.name);
-        group.controls.quantity.setValue(value.data.quantity);
-        group.controls.description.setValue(value.data.description);
-        group.controls.requirement.setValue(value.data.requirement);
-        group.controls.univ_id.setValue(value.data.univ_id);
+        group.controls.name.setValue(responseData.name);
+        group.controls.quantity.setValue(responseData.quantity);
+        group.controls.description.setValue(responseData.description);
+        group.controls.requirement.setValue(responseData.requirement);
+        group.controls.univ_id.setValue(responseData.univ_id);
+      }
+    });
+
+    await AuthService.get({
+      url: 'university',
+      name: 'Scholarship',
+      token: context.token(),
+      success: (res: any) => {
+        const value = res.data;
+
+        setUniversities(value.data.filter((item: any) => item.quantity > 0).map((item: any) => ({
+          label: item.name,
+          value: item.id
+        })));
       },
       finally: () => {
         context.updateData('loading', false);
@@ -153,6 +189,14 @@ const ScholarshipEdit: Component = () => {
                   placeholder='Requirement'
                   control={group.controls.requirement}
                   class='form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
+                />
+              </div>
+              <div class="mb-3">
+                <label>University</label>
+                <Select
+                  format={formatter}
+                  options={universities()}
+                  onChange={data => group.controls.univ_id.setValue(data.value)}
                 />
               </div>
               <CustomButton 
