@@ -19,5 +19,5 @@ export {
   GridData,
   PieChart,
   CustomInput,
-  CustomButton,
+  CustomButton
 };
