@@ -1,7 +1,7 @@
 import Println from './Debug';
 import Validator from './Validator';
 import { getCookie, checkCookie } from './Cookie';
-import { getStorage, setStorage, deleteStorage } from './LocalStorage';
+import { getStorage, setStorage, deleteStorage, setAndDeleteStorage } from './LocalStorage';
 import { convertToTitleCase, convertErrorResponseData, convertStringToNumber, convertNumberToString } from './Parse';
 
 export {
@@ -13,6 +13,7 @@ export {
   checkCookie,
   deleteStorage,
   convertToTitleCase,
+  setAndDeleteStorage,
   convertStringToNumber,
   convertNumberToString,
   convertErrorResponseData,
