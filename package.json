@@ -47,6 +47,7 @@
     "@solidjs/router": "^0.8.2",
     "@suid/icons-material": "^0.6.3",
     "@suid/material": "^0.12.3",
+    "@thisbeyond/solid-select": "^0.14.0",
     "ag-grid-community": "28.2.0",
     "ag-grid-solid": "28.2.0",
     "axios": "^1.4.0",
