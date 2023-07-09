@@ -35,4 +35,15 @@ function getOrCreateStorage<T>(key: string, defaultValue: T, storage = localStor
   return [value, setValueAndStore];
 }
 
-export { getStorage, setStorage, deleteStorage, getOrCreateStorage };
+async function setAndDeleteStorage<T>(key: string, value: T, storage = localStorage) {
+  const storedValue = storage.getItem(key);
+
+  if (storedValue) {
+    storage.removeItem(key);
+    storage.setItem(key, JSON.stringify(value));
+  } else {
+    storage.setItem(key, JSON.stringify(value));
+  }
+}
+
+export { getStorage, setStorage, deleteStorage, getOrCreateStorage, setAndDeleteStorage };

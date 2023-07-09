@@ -1,5 +1,5 @@
-
 # Scholarmate
+
 Scholarmate user interface using solidjs framework with tailwind and typescript
 
 ## Screenshots  
@@ -60,21 +60,22 @@ To run this project, you will need to add the following environment variables to
 
 `VITE_DEV`  
 
-`VITE_APP_NAME` 
+`VITE_APP_NAME`
 
-`VITE_API_URL` 
+`VITE_API_URL`
 
 ## Acknowledgements  
 
 - [Solidjs](https://www.solidjs.com/docs/latest/api)
 - [Axios](https://axios-http.com/docs/intro)
-- [Sweetalert](https://sweetalert.js.org/guides/)
+- [Sweetalert](https://sweetalert.js.org/guides)
 - [Toaster](https://github.com/ardeora/solid-toast#readme)
 - [Form Validator](https://github.com/jorroll/solid-forms#readme)
+- [Select Input](https://solid-select.com)
 
 ## Feedback  
 
-If you have any feedback, please reach out to us at sarahpalastrin@gmail.com
+If you have any feedback, please reach out to us at <sarahpalastrin@gmail.com>
 
 ## License  
 

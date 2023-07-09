@@ -10,6 +10,8 @@ const University = lazy(() => import('./pages/University'));
 const StudentAdd = lazy(() => import('./pages/StudentAdd'));
 const Scholarship = lazy(() => import('./pages/Scholarship'));
 const StudentEdit = lazy(() => import('./pages/StudentEdit'));
+const UniversityAdd = lazy(() => import('./pages/UniversityAdd'));
+const ScholarshipAdd = lazy(() => import('./pages/ScholarshipAdd'));
 const UniversityEdit = lazy(() => import('./pages/UniversityEdit'));
 const ScholarshipEdit = lazy(() => import('./pages/ScholarshipEdit'));
 
@@ -24,7 +26,9 @@ const App: Component = () => {
       <Route path="/university" component={University} />
       <Route path="/student/add" component={StudentAdd} />
       <Route path="/scholarship" component={Scholarship} />
+      <Route path="/university/add" component={UniversityAdd} />
       <Route path="/student/:id/edit" component={StudentEdit} />
+      <Route path="/scholarship/add" component={ScholarshipAdd} />
       <Route path="/university/:id/edit" component={UniversityEdit} />
       <Route path="/scholarship/:id/edit" component={ScholarshipEdit} />
     </Routes>

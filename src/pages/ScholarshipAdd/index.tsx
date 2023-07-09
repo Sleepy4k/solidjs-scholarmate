@@ -2,9 +2,9 @@ import { Auth } from '@contexts';
 import { AuthLayout } from '@layouts';
 import { AuthService } from '@services';
 import '@thisbeyond/solid-select/style.css';
+import { useNavigate, A } from '@solidjs/router';
 import { Select } from '@thisbeyond/solid-select';
 import { CustomInput, CustomButton } from '@components';
-import { useNavigate, useParams, A } from '@solidjs/router';
 import { createFormGroup, createFormControl } from 'solid-forms';
 import { Component, useContext, createSignal, createEffect } from 'solid-js';
 import { Println, Validator, convertToTitleCase, convertStringToNumber } from '@utils';
@@ -14,8 +14,7 @@ interface IUniversity {
   value: string;
 }
 
-const ScholarshipEdit: Component = () => {
-  const params = useParams();
+const ScholarshipAdd: Component = () => {
   const navigate = useNavigate();
   const context = useContext<Auth.IAuthContext>(Auth.Context);
   const [loading, setLoading] = createSignal<boolean>(false);
@@ -52,6 +51,7 @@ const ScholarshipEdit: Component = () => {
   });
 
   const handleValidation = () => {
+    console.log(group.controls.univ_id.value);
     if (group.isSubmitted) {
       Println('Scholarship', 'Form already submitted', 'error');
       return;
@@ -79,8 +79,8 @@ const ScholarshipEdit: Component = () => {
   };
 
   const handleSubmit = async () => {
-    await AuthService.put({
-      url: `scholarship/${params.id}`,
+    await AuthService.post({
+      url: 'scholarship',
       name: 'Scholarship',
       data: {
         name: group.controls.name.value,
@@ -108,22 +108,6 @@ const ScholarshipEdit: Component = () => {
     context.updateData('loading', true);
 
     await AuthService.get({
-      url: `scholarship/${params.id}`,
-      name: 'Scholarship',
-      token: context.token(),
-      success: (res: any) => {
-        const value = res.data;
-        const responseData = value.data[0];
-
-        group.controls.name.setValue(responseData.name);
-        group.controls.quantity.setValue(responseData.quantity);
-        group.controls.description.setValue(responseData.description);
-        group.controls.requirement.setValue(responseData.requirement);
-        group.controls.univ_id.setValue(responseData.univ_id);
-      }
-    });
-
-    await AuthService.get({
       url: 'university',
       name: 'Scholarship',
       token: context.token(),
@@ -142,7 +126,7 @@ const ScholarshipEdit: Component = () => {
   };
 
   return (
-    <AuthLayout onFinish={onFinish} canAccess='admin'>
+    <AuthLayout onFinish={onFinish}>
       <section>
         <div class="py-12 h-full">
           <div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-500">
@@ -200,7 +184,7 @@ const ScholarshipEdit: Component = () => {
                 />
               </div>
               <CustomButton 
-                title='Edit'
+                title='Add'
                 disabled={loading()}
                 onClick={handleValidation}
                 class='inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full'
@@ -222,4 +206,4 @@ const ScholarshipEdit: Component = () => {
   );
 };
 
-export default ScholarshipEdit;
+export default ScholarshipAdd;

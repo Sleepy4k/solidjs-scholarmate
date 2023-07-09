@@ -1,31 +1,22 @@
 import { Auth } from '@contexts';
 import { AuthLayout } from '@layouts';
 import { AuthService } from '@services';
-import '@thisbeyond/solid-select/style.css';
-import { Select } from '@thisbeyond/solid-select';
+import { useNavigate, A } from '@solidjs/router';
 import { CustomInput, CustomButton } from '@components';
-import { useNavigate, useParams, A } from '@solidjs/router';
 import { createFormGroup, createFormControl } from 'solid-forms';
 import { Component, useContext, createSignal, createEffect } from 'solid-js';
 import { Println, Validator, convertToTitleCase, convertStringToNumber } from '@utils';
 
-interface IUniversity {
-  label: string;
-  value: string;
-}
-
-const ScholarshipEdit: Component = () => {
-  const params = useParams();
+const UniversityAdd: Component = () => {
   const navigate = useNavigate();
   const context = useContext<Auth.IAuthContext>(Auth.Context);
   const [loading, setLoading] = createSignal<boolean>(false);
-  const [universities, setUniversities] = createSignal<IUniversity[]>([]);
   const group = createFormGroup({
     name: createFormControl('', {
       required: true,
       validators: [Validator.required, Validator.maxLength],
     }),
-    quantity: createFormControl('', {
+    major: createFormControl('', {
       required: true,
       validators: [Validator.required, Validator.maxLength],
     }),
@@ -33,17 +24,23 @@ const ScholarshipEdit: Component = () => {
       required: true,
       validators: [Validator.required, Validator.maxLength],
     }),
-    requirement: createFormControl('', {
+    quantity: createFormControl('', {
+      required: true,
+      validators: [Validator.required, Validator.isNumber, Validator.minLengthNumber],
+    }),
+    image: createFormControl('', {
       required: true,
       validators: [Validator.required, Validator.maxLength],
     }),
-    univ_id: createFormControl('', {
+    link: createFormControl('', {
+      required: true,
+      validators: [Validator.required, Validator.maxLength],
+    }),
+    alias: createFormControl('', {
       required: true,
       validators: [Validator.required, Validator.maxLength],
     }),
   });
-
-  const formatter = (item: any, type: string) => (type === 'option' ? item.label : item.label);
 
   createEffect(() => {
     setLoading(context.loading());
@@ -53,7 +50,7 @@ const ScholarshipEdit: Component = () => {
 
   const handleValidation = () => {
     if (group.isSubmitted) {
-      Println('Scholarship', 'Form already submitted', 'error');
+      Println('University', 'Form already submitted', 'error');
       return;
     }
 
@@ -63,7 +60,7 @@ const ScholarshipEdit: Component = () => {
           const errors = Object.values(error.errors);
 
           for (let index = 0; index < errors.length; index++) {
-            Println('Scholarship', `${convertToTitleCase(fieldName)} ${errors[index]}`, 'error');
+            Println('University', `${convertToTitleCase(fieldName)} ${errors[index]}`, 'error');
           }
         }
       });
@@ -79,22 +76,24 @@ const ScholarshipEdit: Component = () => {
   };
 
   const handleSubmit = async () => {
-    await AuthService.put({
-      url: `scholarship/${params.id}`,
-      name: 'Scholarship',
+    await AuthService.post({
+      url: 'university',
+      name: 'University',
       data: {
         name: group.controls.name.value,
-        quantity: convertStringToNumber(group.controls.quantity.value),
+        major: group.controls.major.value,
         description: group.controls.description.value,
-        requirement: group.controls.requirement.value,
-        univ_id: convertStringToNumber(group.controls.univ_id.value),
+        quantity: convertStringToNumber(group.controls.quantity.value),
+        image: group.controls.image.value,
+        link: group.controls.link.value,
+        alias: group.controls.alias.value,
       },
       token: context.token(),
       success: (res: any) => {
         const value = res.data;
 
-        Println('Scholarship', value.message, 'success');
-        navigate('/scholarship');
+        Println('University', value.message, 'success');
+        navigate('/university');
       },
       finally: () => {
         group.markTouched(false);
@@ -104,45 +103,8 @@ const ScholarshipEdit: Component = () => {
     });
   };
 
-  const onFinish = async () => {
-    context.updateData('loading', true);
-
-    await AuthService.get({
-      url: `scholarship/${params.id}`,
-      name: 'Scholarship',
-      token: context.token(),
-      success: (res: any) => {
-        const value = res.data;
-        const responseData = value.data[0];
-
-        group.controls.name.setValue(responseData.name);
-        group.controls.quantity.setValue(responseData.quantity);
-        group.controls.description.setValue(responseData.description);
-        group.controls.requirement.setValue(responseData.requirement);
-        group.controls.univ_id.setValue(responseData.univ_id);
-      }
-    });
-
-    await AuthService.get({
-      url: 'university',
-      name: 'Scholarship',
-      token: context.token(),
-      success: (res: any) => {
-        const value = res.data;
-
-        setUniversities(value.data.filter((item: any) => item.quantity > 0).map((item: any) => ({
-          label: item.name,
-          value: item.id
-        })));
-      },
-      finally: () => {
-        context.updateData('loading', false);
-      }
-    });
-  };
-
   return (
-    <AuthLayout onFinish={onFinish} canAccess='admin'>
+    <AuthLayout>
       <section>
         <div class="py-12 h-full">
           <div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-500">
@@ -155,6 +117,28 @@ const ScholarshipEdit: Component = () => {
                   disabled={loading()}
                   placeholder='Name'
                   control={group.controls.name}
+                  class='form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
+                />
+              </div>
+              <div class="mb-3">
+                <CustomInput
+                  name='alias'
+                  type='text'
+                  label='Alias'
+                  disabled={loading()}
+                  placeholder='Alias'
+                  control={group.controls.alias}
+                  class='form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
+                />
+              </div>
+              <div class="mb-3">
+                <CustomInput
+                  name='major'
+                  type='text'
+                  label='Major'
+                  disabled={loading()}
+                  placeholder='Major'
+                  control={group.controls.major}
                   class='form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
                 />
               </div>
@@ -182,25 +166,28 @@ const ScholarshipEdit: Component = () => {
               </div>
               <div class="mb-3">
                 <CustomInput
-                  name='requirement'
+                  name='link'
                   type='text'
-                  label='Requirement'
+                  label='Web Url'
                   disabled={loading()}
-                  placeholder='Requirement'
-                  control={group.controls.requirement}
+                  placeholder='Link'
+                  control={group.controls.link}
                   class='form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
                 />
               </div>
               <div class="mb-3">
-                <label>University</label>
-                <Select
-                  format={formatter}
-                  options={universities()}
-                  onChange={data => group.controls.univ_id.setValue(data.value)}
+                <CustomInput
+                  name='image'
+                  type='text'
+                  label='Image Url'
+                  disabled={loading()}
+                  placeholder='Link'
+                  control={group.controls.image}
+                  class='form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none'
                 />
               </div>
               <CustomButton 
-                title='Edit'
+                title='Add'
                 disabled={loading()}
                 onClick={handleValidation}
                 class='inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full'
@@ -208,7 +195,7 @@ const ScholarshipEdit: Component = () => {
               <div class='flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5' />
               <A
                 class='px-7 py-3 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full flex justify-center items-center mb-3 bg-[#3b5998]'
-                href='/scholarship'
+                href='/university'
                 data-mdb-ripple='true'
                 data-mdb-ripple-color='light'
               >
@@ -222,4 +209,4 @@ const ScholarshipEdit: Component = () => {
   );
 };
 
-export default ScholarshipEdit;
+export default UniversityAdd;

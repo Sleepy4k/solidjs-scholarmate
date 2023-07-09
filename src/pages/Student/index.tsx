@@ -21,26 +21,34 @@ const Students: Component = () => {
     setStudent(context.student());
   });
 
+  const handleRefresh = async (loading: boolean = false) => {
+    loading && context.updateData('loading', true);
+
+    await AuthService.get({
+      url: 'student',
+      name: 'Student',
+      token: context.token(),
+      success: (res: any) => {
+        const value = res.data;
+
+        setStudents(value.data);
+      }
+    });
+
+    loading && context.updateData('loading', false);
+  };
+
   const onFinish = async () => {
     context.updateData('loading', true);
 
-    if (user() && user().role === 'user') {
+    if (user() && user()?.role === 'user') {
       if (student()) {
         navigate(`/student/${student().id}/edit`);
       } else {
         navigate('/student/add');
       }
-    } else if (user() && user().role === 'admin') {
-      await AuthService.get({
-        url: 'student',
-        name: 'Student',
-        token: context.token(),
-        success: (res: any) => {
-          const value = res.data;
-
-          setStudents(value.data);
-        }
-      });
+    } else if (user() && user()?.role === 'admin') {
+      await handleRefresh();
     }
 
     context.updateData('loading', false);
@@ -48,7 +56,7 @@ const Students: Component = () => {
 
   return (
     <AuthLayout onFinish={onFinish}>
-      {user().role === 'admin' && <Admin loading={loading()} students={students()} token={context.token()} />}
+      {user()?.role === 'admin' && <Admin loading={loading()} students={students()} token={context.token()} handleRefresh={handleRefresh} />}
     </AuthLayout>
   );
 };

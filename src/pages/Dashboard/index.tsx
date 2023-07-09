@@ -33,7 +33,7 @@ const Dashboard: Component = () => {
   const onFinish = async () => {
     context.updateData('loading', true);
 
-    if (student() && user() && user().role === 'user') {
+    if (student() && user() && user()?.role === 'user') {
       await AuthService.get({
         url: `application/${student().id}`,
         token: context.token(),
@@ -67,7 +67,7 @@ const Dashboard: Component = () => {
           context.updateData('loading', false);
         }
       });
-    } else if (user() && user().role === 'admin') {
+    } else if (user() && user()?.role === 'admin') {
       await AuthService.get({
         url: 'application',
         name: 'Dashboard',
@@ -124,7 +124,7 @@ const Dashboard: Component = () => {
           <Box title='Application Declined' value={applications().declined.toString()} />
           <Box title='Application Pending' value={applications().pending.toString()} />
         </div>
-        {user().role === 'user' ? <User forum={forum()} myapplications={myapplications()} /> : <Admin loading={loading()} scholarships={scholarships()} universities={universities()} />}
+        {user()?.role === 'user' ? <User forum={forum()} myapplications={myapplications()} /> : <Admin loading={loading()} scholarships={scholarships()} universities={universities()} />}
       </div>        
     </AuthLayout>
   );
