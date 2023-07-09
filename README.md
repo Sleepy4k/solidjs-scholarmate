@@ -79,4 +79,4 @@ If you have any feedback, please reach out to us at <sarahpalastrin@gmail.com>
 
 ## License  
 
-[MIT](https://github.com/Sleepy4k/rust-scholarmate-api/blob/main/LICENSE)
+[MIT](https://github.com/Sleepy4k/solidjs-scholarmate/blob/main/LICENSE)
